@@ -10,7 +10,7 @@ todo = (state = {}, action) => {
         completed: false
       }
     case 'TOGGLE_TODO':
-      return (action.id = state.id) ? _.extend(state, !state.completed) : state
+      return (action.id == state.id) ? _.extend(state, {completed: !state.completed}) : state
     default:
       return state
   }

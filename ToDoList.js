@@ -1,19 +1,17 @@
 import React from 'react';
 import { Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
-import { ListItem, List } from 'react-native-elements'
+import { CheckBox, ListItem, List } from 'react-native-elements'
 import { FormLabel, FormInput } from 'react-native-elements'
 import { TabNavigator, StackNavigator } from "react-navigation";
 
 import { Provider, connect } from 'react-redux'
-import { createStore } from 'redux'
-
 
 import {todoApp, todos} from './reducers'
+import {toggleTodo} from './actions'
 
 class ToDoList extends React.Component {
   constructor(props) {
-    super(props);
-    console.log(props)
+    super(props)
   }
 
   static navigationOptions = ({navigation}) => 
@@ -27,12 +25,14 @@ class ToDoList extends React.Component {
   //TODO: Change this into an icon 
 
   _renderItem({item,index}) {
-    return (
-      <ListItem 
-       roundAvatar
-       title = {item.text}
+    const checkbox = (
+      <CheckBox
+      checked={item.completed}
+      title={item.text}
+      onPress = {() => {this.props.dispatch(toggleTodo(item.id))}}
       />
     )
+    return checkbox
   }
   _renderHeader() {
     return (
@@ -43,7 +43,7 @@ class ToDoList extends React.Component {
     return (
         <FlatList
         data={this.props.todos}
-        renderItem={this._renderItem}
+        renderItem={this._renderItem.bind(this)}
         keyExtractor={item => item.id}
         />
     );

@@ -17,11 +17,13 @@ import {addTodo} from './actions'
 
 
 class ToDoModal extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       text: "help"
     }
+    console.log("l")
+    console.log(this.props.dispatch)
   }
   static navigationOptions = ({navigation}) => 
   {

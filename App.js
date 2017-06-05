@@ -15,6 +15,7 @@ import ToDoModal from './ToDoModal'
 import ToDoList from './ToDoList'
 
 import {importTodos} from './actions'
+import _ from 'lodash'
 // AWS Integrations
 // import AWS from 'aws-sdk/dist/aws-sdk-react-native'
 // import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
@@ -23,9 +24,10 @@ import {importTodos} from './actions'
 
 
 
-const testData = 
+let testData = 
   [{ "id": 1, "text": "Nevins" }, { "id": 2, "text": "Alvy" }, { "id": 3, "text": "Loutitia" }, { "id": 4, "text": "Serene" }, { "id": 5, "text": "Esma" }, { "id": 6, "text": "Bradly" }, { "id": 7, "text": "Antone" }, { "id": 8, "text": "Herminia" }, { "id": 9, "text": "Pauly" }, { "id": 10, "text": "Bartlet" }, { "id": 11, "text": "Fitz" }, { "id": 12, "text": "Dorey" }, { "id": 13, "text": "Antoine" }, { "id": 14, "text": "Sharona" }, { "id": 15, "text": "Robinetta" }, { "id": 16, "text": "Gertruda" }, { "id": 17, "text": "Lilah" }, { "id": 18, "text": "Tremayne" }, { "id": 19, "text": "Englebert" }, { "id": 20, "text": "Geordie" }] 
 
+testData = testData.map(x => _.extend(x,{completed: false}))
 const styles = StyleSheet.create({
   container: {
     flex: 1,
