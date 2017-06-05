@@ -30,7 +30,7 @@ class ToDoList extends React.Component {
     return (
       <ListItem 
        roundAvatar
-       title = {item.first_name}
+       title = {item.text}
       />
     )
   }
