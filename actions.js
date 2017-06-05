@@ -1,7 +1,7 @@
 let nextTodoId = 0
 
 export const importTodos = (todos) => {
-  nextTodoId = todos.length
+  nextTodoId = todos.length + 1
   return {
     type: 'IMPORT_TODOS',
     todos

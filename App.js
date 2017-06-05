@@ -14,6 +14,7 @@ import {todoApp, todos} from './reducers'
 import ToDoModal from './ToDoModal'
 import ToDoList from './ToDoList'
 
+import {importTodos} from './actions'
 // AWS Integrations
 // import AWS from 'aws-sdk/dist/aws-sdk-react-native'
 // import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
@@ -66,6 +67,7 @@ const BasicApp = TabNavigator({
 class Root extends React.Component {
   componentWillMount() {
     this.store = createStore(todoApp,{todos: testData})
+    this.store.dispatch(importTodos(testData))
   }
   render() {
     return (

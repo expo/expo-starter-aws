@@ -25,10 +25,13 @@ todos = (state = [], action) => {
       ]
     case 'TOGGLE_TODO':
       return state.map(td => todo(td,action))
+    case 'IMPORT_TODOS':
+      return action.todos
     default:
       return state
   }
 }
+
 
 export const todoApp = combineReducers({
   todos,
