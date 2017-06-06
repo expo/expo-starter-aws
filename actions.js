@@ -29,3 +29,10 @@ export const toggleTodo = (id) => {
     id
   }
 }
+
+export const deleteTodo = (index) => {
+  return {
+    type: 'deleteTodo',
+    index
+  }
+}

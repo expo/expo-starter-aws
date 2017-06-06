@@ -19,7 +19,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "^1.18.0",
+    "amazon-cognito-identity-js": "git+https://github.com/expo/amazon-cognito-identity-js.git",
     "aws-sdk": "^2.62.0",
     "events": "^1.1.1",
     "expo": "^17.0.0",

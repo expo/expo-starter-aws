@@ -1,33 +1,31 @@
 // React UI
-import React from 'react';
-import { Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
+import React from 'react'
+import _ from 'lodash'
+import { Button, Image, StyleSheet, FlatList, Text, View } from 'react-native'
 import { ListItem, List } from 'react-native-elements'
 import { FormLabel, FormInput } from 'react-native-elements'
-import { TabNavigator, StackNavigator } from "react-navigation";
+import { TabNavigator, StackNavigator } from "react-navigation"
 
 // Redux
 import { Provider, connect } from 'react-redux'
 import { createStore } from 'redux'
 import {todoApp, todos} from './reducers'
+import {importTodos} from './actions'
 
 // Components 
-import ToDoModal from './ToDoModal'
-import ToDoList from './ToDoList'
+import ToDoModal from './Components/TodoModal'
+import ToDoList from './Components/TodoList'
 
-import {importTodos} from './actions'
-import _ from 'lodash'
+
 // AWS Integrations
-// import AWS from 'aws-sdk/dist/aws-sdk-react-native'
-// import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
-// import AWSHelper from './AWSHelper'
-
-
-
+// TODO: Add AWS Integrations that DO NOT BREAK
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
+import Cognito from './AWSHelper';
 
 let testData = 
   [{ "id": 1, "text": "Nevins" }, { "id": 2, "text": "Alvy" }, { "id": 3, "text": "Loutitia" }, { "id": 4, "text": "Serene" }, { "id": 5, "text": "Esma" }, { "id": 6, "text": "Bradly" }, { "id": 7, "text": "Antone" }, { "id": 8, "text": "Herminia" }, { "id": 9, "text": "Pauly" }, { "id": 10, "text": "Bartlet" }, { "id": 11, "text": "Fitz" }, { "id": 12, "text": "Dorey" }, { "id": 13, "text": "Antoine" }, { "id": 14, "text": "Sharona" }, { "id": 15, "text": "Robinetta" }, { "id": 16, "text": "Gertruda" }, { "id": 17, "text": "Lilah" }, { "id": 18, "text": "Tremayne" }, { "id": 19, "text": "Englebert" }, { "id": 20, "text": "Geordie" }] 
+testData = testData.map(x => _.extend(x,{completed: false})) //TODO: Remove test data and use real data
 
-testData = testData.map(x => _.extend(x,{completed: false}))
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -60,6 +58,7 @@ class SettingsScreen extends React.Component {
     );
   }
 }
+SettingsScreen = connect(state => ({}))(SettingsScreen);
 
 const BasicApp = TabNavigator({
   ToDos: {screen: ToDoScreen},
@@ -80,7 +79,8 @@ class Root extends React.Component {
   }
 }
 
-SettingsScreen = connect(state => ({}))(SettingsScreen);
+let c = new Cognito()
+c.login('abc','username')
 
 export default Root;
 

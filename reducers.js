@@ -20,11 +20,14 @@ todos = (state = [], action) => {
   switch(action.type) {
     case 'ADD_TODO':
       return [
-        ...state,
-        todo(undefined, action)
+        todo(undefined, action),
+        ...state
       ]
+
+    case 'DELETE_TODO':
+      return state.splice(action.index, 1)
     case 'TOGGLE_TODO':
-      return state.map(td => todo(td,action))
+      return _.map(state, td => todo(td,action))
     case 'IMPORT_TODOS':
       return action.todos
     default:
@@ -32,7 +35,18 @@ todos = (state = [], action) => {
   }
 }
 
+loading = (state = false, action) => {
+  switch(action.type) {
+    case 'GET_TODO_DATA':
+      return true
+    default:
+      return false
+  }
+}
+
+
 
 export const todoApp = combineReducers({
   todos,
+  loading,
 });
