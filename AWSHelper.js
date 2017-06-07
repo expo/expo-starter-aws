@@ -42,15 +42,15 @@ export default class Cognito {
   }
 
   login(username, password) {
-    this.makeUser(username).authenticateUser(this.makeAuthDetails(username,password), {
-      onSuccess: (result) => {
-        console.log('access token + ' + result.getAccessToken().getJwtToken())
-      },
-      onFailure: (err) => {
-        alert(err);
-      }
+    let self = this
+    return new Promise((resolve, reject) => {
+      self.makeUser(username).authenticateUser(self.makeAuthDetails(username,password), {
+        onSuccess: (result) => resolve(result.getAccessToken()),
+        onFailure: (err) => reject(err)
+      })
     })
   }
+
   confirmRegistration(username, code) {
     this.makeUser(username).confirmRegistration(code, true, (err, result) => {
       if (err) {
@@ -62,16 +62,18 @@ export default class Cognito {
   }
 
   signUp(username, password, email) {
-    pool = this.getUserPool()
-    let attributeList = []
-    attributeList.push(this.makeAttribute('email',email))
-    this.getUserPool().signUp(username, password, attributeList, null, (err,result) => {
-      if (err) {
-        alert(err);
-        return;
-      }
-      let cognitoUser = result.user;
-      console.log('username is ' + cognitoUser.getUsername())
+    let self = this
+    return new Promise((resolve, reject) => {
+      pool = self.getUserPool()
+      let attributeList = []
+      attributeList.push(self.makeAttribute('email',email))
+      // async
+      self.getUserPool().signUp(username, password, attributeList, null, (err,result) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(result);
+      })
     })
   }
 }

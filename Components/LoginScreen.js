@@ -7,7 +7,7 @@ import { TabNavigator, StackNavigator } from "react-navigation";
 import { Provider, connect } from 'react-redux'
 
 import {todoApp, todos} from '../reducers'
-import {toggleTodo} from '../actions'
+import {login} from '../actions'
 
 const styles = {
 
@@ -39,7 +39,7 @@ class LoginScreen extends React.Component {
         />
         <Button
         title = 'Login'
-        onPress = {() => this._login()}
+        onPress = {() => this.props.dispatch(login(this.state.username,this.state.password))}
         />
       </View>
     )

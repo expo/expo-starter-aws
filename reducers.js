@@ -44,9 +44,18 @@ loading = (state = false, action) => {
   }
 }
 
+authenticated = (state = false, action) => {
+  switch(action.type) {
+    case 'LOGIN_SUCCESS': 
+      return true
+    default:  
+      return false
+  }
+}
 
 
 export const todoApp = combineReducers({
   todos,
   loading,
+  authenticated
 });

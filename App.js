@@ -8,14 +8,15 @@ import { TabNavigator, StackNavigator } from "react-navigation"
 
 // Redux
 import { Provider, connect } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import {todoApp, todos} from './reducers'
-import {importTodos} from './actions'
+import {importTodos, login} from './actions'
 
 // Components 
 import ToDoModal from './Components/TodoModal'
 import ToDoList from './Components/TodoList'
-
+import LoginScreen from './Components/LoginScreen'
 
 // AWS Integrations
 // TODO: Add AWS Integrations that DO NOT BREAK
@@ -60,27 +61,34 @@ class SettingsScreen extends React.Component {
 }
 SettingsScreen = connect(state => ({}))(SettingsScreen);
 
-const BasicApp = TabNavigator({
+const MainScreen = TabNavigator({
   ToDos: {screen: ToDoScreen},
   Settings: {screen: SettingsScreen}
 });
 
+class App extends React.Component {
+  render() {
+    return this.props.authenticated ? (<MainScreen/>) : (<LoginScreen/>)
+  }
+}
+App = connect(state => state)(App)
+
 class Root extends React.Component {
   componentWillMount() {
-    this.store = createStore(todoApp,{todos: testData})
+    this.store = createStore(todoApp,{}, applyMiddleware(thunk))
     this.store.dispatch(importTodos(testData))
   }
   render() {
     return (
        <Provider store={this.store}>
-         <BasicApp />
+         <App />
        </Provider>
      );
   }
 }
 
 let c = new Cognito()
-c.login('abc','username')
-
+// c.signUp('wilson','password','wilzh40@gmail.com')
+// c.confirmRegistration('wilson','540861')
 export default Root;
 
