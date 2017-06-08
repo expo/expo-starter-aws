@@ -44,7 +44,6 @@ export const syncTodos = () => async (dispatch) => {
         '#userId': 'userId',
       },
       ExpressionAttributeValues: {
-        //':userId': self.user.getUser().getUsername(),
         ':userId': AWS.config.credentials.identityId
       },
       'ScanIndexForward': false
@@ -61,6 +60,7 @@ export const syncTodos = () => async (dispatch) => {
     dispatch(syncTodos())
   }
 }
+
 export const addTodo = (text) => async (dispatch) => {
   try {
     const userId = AWS.config.credentials.identityId

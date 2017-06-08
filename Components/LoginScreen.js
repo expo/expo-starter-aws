@@ -27,10 +27,11 @@ const styles = StyleSheet.create({
   },
   input: {
     margin: 10,
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: 'gray',
     padding: 10,
     height: 50,
-    borderColor: 'gray',
-    borderWidth: 2
   },
   title: {
     textAlign: 'center',
@@ -58,6 +59,7 @@ class LoginScreen extends React.Component {
         title = 'Login'
         onPress = {() => this.props.dispatch(login(this.state.username,this.state.password))}
         />
+
         <Button 
         style={styles.button}
         title = 'Register'

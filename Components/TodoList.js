@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
+import { TouchableOpacity, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
 import { CheckBox, ListItem, List } from 'react-native-elements'
 import { FormLabel, FormInput } from 'react-native-elements'
 import { TabNavigator, StackNavigator } from "react-navigation";
+import { Ionicons } from '@expo/vector-icons';
 
 import { Provider, connect } from 'react-redux'
 
@@ -17,10 +18,25 @@ class ToDoList extends React.Component {
   static navigationOptions = ({navigation}) => 
   {
     return {
-      headerRight: 
-      (<Button title="+" onPress={() => navigation.navigate("AddToDo")} />)
+      headerRight: (
+      <TouchableOpacity
+      onPress={() => navigation.navigate("AddToDo")}
+      style={{
+        flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 10,
+          paddingTop: 1,
+      }}>
+        <Ionicons
+        name='ios-add'
+        size={26}
+        />
+        </TouchableOpacity>
+      )
     }
   }
+
 
   //TODO: Change this into an icon 
 

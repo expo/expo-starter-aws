@@ -5,6 +5,8 @@ import { Button, Image, StyleSheet, FlatList, Text, View } from 'react-native'
 import { ListItem, List } from 'react-native-elements'
 import { FormLabel, FormInput } from 'react-native-elements'
 import { TabNavigator, StackNavigator } from "react-navigation"
+import { Ionicons } from '@expo/vector-icons';
+
 
 // Redux
 import { Provider, connect } from 'react-redux'
@@ -59,12 +61,36 @@ const ToDoScreen = StackNavigator({
   },
   AddToDo: {
     screen: ToDoModal
-  }}, navigationConfig)
+  }
+}, navigationConfig)
+
 
 
 const MainScreen = TabNavigator({
-  ToDos: {screen: ToDoScreen},
-  Settings: {screen: SettingsScreen}
+  ToDos: {
+    screen: ToDoScreen,
+    navigationOptions: {
+      tabBarLabel: 'Todos',
+      tabBarIcon: ({ tintColor, focused }) => (
+        <Ionicons
+        name={focused ? 'ios-menu' : 'ios-menu-outline'}
+        size={26}
+        style={{ color: tintColor }}
+        />)
+    }
+  },
+  Settings: {
+    screen: SettingsScreen,
+    navigationOptions: {
+      tabBarLabel: 'Settings',
+      tabBarIcon: ({ tintColor, focused }) => (
+        <Ionicons
+        name={focused ? 'ios-settings' : 'ios-settings-outline'}
+        size={26}
+        style={{ color: tintColor }}
+        />)
+    }
+  }
 });
 
 class App extends React.Component {
@@ -74,7 +100,6 @@ class App extends React.Component {
         return <MainScreen/>
       default:
         return <LoginScreen/>
-
     }
   }
 }
