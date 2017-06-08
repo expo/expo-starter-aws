@@ -41,23 +41,26 @@ export default class Cognito {
     });
   }
 
+  // Wrappers for cognito identity to transform them into promises
   login(username, password) {
     let self = this
     return new Promise((resolve, reject) => {
       self.makeUser(username).authenticateUser(self.makeAuthDetails(username,password), {
-        onSuccess: (result) => resolve(result.getAccessToken()),
+        onSuccess: (result) => resolve(result.getIdToken().getJwtToken()),
         onFailure: (err) => reject(err)
       })
     })
   }
 
   confirmRegistration(username, code) {
-    this.makeUser(username).confirmRegistration(code, true, (err, result) => {
-      if (err) {
-        alert(err)
-        return
-      }
-      console.log('confirm registration' + result)
+    return new Promise((resolve, reject) => {
+      this.makeUser(username).confirmRegistration(code, true, (err, result) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(result)
+      })
     })
   }
 
@@ -71,12 +74,15 @@ export default class Cognito {
       self.getUserPool().signUp(username, password, attributeList, null, (err,result) => {
         if (err) {
           reject(err)
+          return
         }
         resolve(result);
       })
     })
   }
 }
+
+
 
 
 

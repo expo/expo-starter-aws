@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { combineReducers } from 'redux'
+import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 
 todo = (state = {}, action) => {
   switch(action.type) {
@@ -43,13 +44,30 @@ loading = (state = false, action) => {
       return false
   }
 }
-
-authenticated = (state = false, action) => {
+// AWS = {
+//  db: db object for todos
+//  login_state: LOGIN_SUCCESS/LOGIN_REQUEST/LOGIN_ERROR/LOGIN_NONE
+//  token: token string
+//  
+//
+//
+// }
+aws = (state = {}, action) => {
   switch(action.type) {
     case 'LOGIN_SUCCESS': 
-      return true
+      // After logging in, set up our local databases
+      // Save the current authentication token
+      return {
+        loginState: action.type,
+        db: action.db
+      }
+    case 'LOGIN_ERROR': 
+      return state
+    case 'LOGOUT':
+      state = {loginState: 'LOGIN_NONE'}
+      return state
     default:  
-      return false
+      return state
   }
 }
 
@@ -57,5 +75,5 @@ authenticated = (state = false, action) => {
 export const todoApp = combineReducers({
   todos,
   loading,
-  authenticated
+  aws
 });
