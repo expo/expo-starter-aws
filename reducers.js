@@ -4,12 +4,6 @@ import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 
 todo = (state = {}, action) => {
   switch(action.type) {
-    case 'ADD_TODO':
-      return {
-        id: action.id,
-        text: action.text,
-        completed: false
-      }
     case 'TOGGLE_TODO':
       return (action.id == state.id) ? _.extend(state, {completed: !state.completed}) : state
     default:
@@ -29,7 +23,7 @@ todos = (state = [], action) => {
       return state.splice(action.index, 1)
     case 'TOGGLE_TODO':
       return _.map(state, td => todo(td,action))
-    case 'IMPORT_TODOS':
+    case 'DISPLAY_TODOS':
       return action.todos
     default:
       return state

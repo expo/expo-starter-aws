@@ -79,15 +79,21 @@ const MainScreen = TabNavigator({
 
 class App extends React.Component {
   render() {
-    return this.props.authenticated ? (<MainScreen/>) : (<LoginScreen/>)
+    switch(this.props.loginState) {
+      case 'LOGIN_SUCCESS':
+        return <MainScreen/>
+      default:
+        return <LoginScreen/>
+
+    }
   }
 }
-App = connect(state => state)(App)
+App = connect(state => state.aws)(App)
 
 class Root extends React.Component {
   componentWillMount() {
     this.store = createStore(todoApp,{}, applyMiddleware(thunk))
-    this.store.dispatch(importTodos(testData))
+    // this.store.dispatch(importTodos(testData))
     let c = new Cognito()
     // Code for signingup, logging in, confirming registration
     // c.signup('wilson','password','wilzh40@gmail.com')

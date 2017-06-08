@@ -17,11 +17,10 @@ const generateId = () => {
   return result.toLowerCase();
 }
 
-// Import test todos from existing data
-export const importTodos = (todos) => {
-  nextTodoId = todos.length + 1
+// Refresh todos
+export const displayTodos = (todos) => {
   return {
-    type: 'IMPORT_TODOS',
+    type: 'DISPLAY_TODOS',
     todos
   }
 }
@@ -50,7 +49,7 @@ export const syncTodos = (db) => async (dispatch) => {
 
     console.log(todos)
     console.log('Updated todos')
-    dispatch(importTodos(todos))
+    dispatch(displayTodos(todos['Items']))
 
   } catch (err) {
     console.log(err)
@@ -58,17 +57,17 @@ export const syncTodos = (db) => async (dispatch) => {
     dispatch({type: 'SYNC_FAIL'})
   }
 }
-export const addTodo = (db, text) => async (dispatch) => {
+export const addTodo = (db, text, completed = false) => async (dispatch) => {
   try {
     const userId = AWS.config.credentials.identityId
-    await db.getDocumentClient().put({
+    await db.put({
       TableName,
       Item: {
         userId,
         text,
+        completed,
         todoId: generateId(),
         creationDate: (new Date().getTime()),
-        completed: false
       },
       ConditionExpression: 'attribute_not_exists(id)'
     }).promise()
@@ -76,7 +75,7 @@ export const addTodo = (db, text) => async (dispatch) => {
     dispatch(syncTodos(db))
   } catch (err) {
     console.log("Add Todo Error")
-    console.log(adderr)
+    console.log(err)
     alert(err)
   }
 }
@@ -84,18 +83,17 @@ export const addTodo = (db, text) => async (dispatch) => {
 export const deleteTodo = (db, todoId) => async (dispatch) => {
   try {
     const userId = AWS.config.credentials.identityId
-    await db.getDocumentClient().delete({
+    await db.delete({
       TableName,
       Item: {
         userId,
         todoId,
       }
     }).promise()
-
     dispatch(syncTodos(db))
   } catch (err) {
     console.log("Add Todo Error")
-    console.log(adderr)
+    console.log(err)
     alert(err)
   }
 }
@@ -108,11 +106,9 @@ export const setVisibilityFilter = (filter) => {
   }
 }
 
-export const toggleTodo = (id) => {
-  return {
-    type: 'TOGGLE_TODO',
-    id
-  }
+export const toggleTodo = (db, todoId) => async (dispatch) => {
+  
+
 }
 
 

@@ -29,7 +29,7 @@ class ToDoList extends React.Component {
       <CheckBox
       checked={item.completed}
       title={item.text}
-      onPress = {() => {this.props.dispatch(toggleTodo(item.id))}}
+      onPress = {() => {this.props.dispatch(toggleTodo(this.props.aws.db,item.todoId))}}
       />
     )
     return checkbox
@@ -45,7 +45,7 @@ class ToDoList extends React.Component {
         <FlatList
         data={this.props.todos}
         renderItem={(i) => this._renderItem(i)}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.todoId}
         />
     );
   }
