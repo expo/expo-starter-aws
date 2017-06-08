@@ -56,15 +56,13 @@ aws = (state = {}, action) => {
         db: action.db
       }
     case 'LOGIN_ERROR': 
-      return state
-    case 'LOGOUT':
-      state = {loginState: 'LOGIN_NONE'}
-      return state
+    case 'LOGIN_REQUEST':
+    case 'LOGIN_NONE':
+      return {loginState: action.type}
     default:  
       return state
   }
 }
-
 
 export const todoApp = combineReducers({
   todos,

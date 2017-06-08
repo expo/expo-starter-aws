@@ -58,6 +58,7 @@ export const syncTodos = () => async (dispatch) => {
     console.log(err)
     alert(err)
     dispatch({type: 'SYNC_FAIL'})
+    dispatch(syncTodos())
   }
 }
 export const addTodo = (text) => async (dispatch) => {
@@ -143,6 +144,7 @@ export const login = (username, password) => async (dispatch) => {
   try {
     console.log(`Logging in: ${username} :: ${password}`)
     dispatch({ type: 'LOGIN_REQUEST' });
+
     c = new Cognito()
     const token = await c.login(username, password);
 
@@ -159,11 +161,13 @@ export const login = (username, password) => async (dispatch) => {
         [loginKey]: token
       }
     })
+
     // Retrieving identity crednetials given a login token
     await AWS.config.credentials.refreshPromise()
 
     // Now we can access the db api based on these identity credentials that are automatically pulled from AWS.config
     db = new AWS.DynamoDB.DocumentClient()
+
     // Save the new database and sync todos for current user
     dispatch({ type: 'LOGIN_SUCCESS', db})
     dispatch(syncTodos())
@@ -173,6 +177,14 @@ export const login = (username, password) => async (dispatch) => {
     dispatch({ type: 'LOGIN_ERROR', error})
   }
 }
+
+export const logout = () => (dispatch) => {
+  const user = new Cognito().getCurrentUser()
+  user.signout()
+  dispatch({ type: 'LOGIN_NONE' })
+}
+
+
 
 export const loginRequest = (username, password) => {
   return {

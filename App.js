@@ -17,6 +17,7 @@ import {importTodos, login} from './actions'
 import ToDoModal from './Components/TodoModal'
 import ToDoList from './Components/TodoList'
 import LoginScreen from './Components/LoginScreen'
+import SettingsScreen from './Components/SettingsScreen'
 
 // AWS Integrations
 // TODO: Add AWS Integrations that DO NOT BREAK
@@ -60,17 +61,6 @@ const ToDoScreen = StackNavigator({
     screen: ToDoModal
   }}, navigationConfig)
 
-
-class SettingsScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Settings Screens</Text>
-      </View>
-    );
-  }
-}
-SettingsScreen = connect(state => ({}))(SettingsScreen);
 
 const MainScreen = TabNavigator({
   ToDos: {screen: ToDoScreen},
