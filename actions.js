@@ -166,7 +166,9 @@ export const login = (username, password) => async (dispatch) => {
     await AWS.config.credentials.refreshPromise()
 
     // Now we can access the db api based on these identity credentials that are automatically pulled from AWS.config
-    db = new AWS.DynamoDB.DocumentClient()
+    // There is a bug in which crc32 checks fail on iPhones when the response is above a certain size
+    // https://github.com/aws/aws-sdk-js/issues?q=is%3Aissue+CRC32CheckFailed+is%3Aclosed
+    db = new AWS.DynamoDB.DocumentClient({dynamoDbCrc32: false })
 
     // Save the new database and sync todos for current user
     dispatch({ type: 'LOGIN_SUCCESS', db})
@@ -180,7 +182,7 @@ export const login = (username, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   const user = new Cognito().getCurrentUser()
-  user.signout()
+  user.signOut()
   dispatch({ type: 'LOGIN_NONE' })
 }
 

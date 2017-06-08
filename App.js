@@ -85,7 +85,7 @@ class Root extends React.Component {
     this.store = createStore(todoApp,{}, applyMiddleware(thunk))
     // this.store.dispatch(importTodos(testData))
     let c = new Cognito()
-    // Code for signingup, logging in, confirming registration
+    // Code for signing up, logging in, confirming registration
     // c.signup('wilson','password','wilzh40@gmail.com')
     // c.confirmregistration('wilson','931659')
     this.store.dispatch(login('wilson','password'))

@@ -17,12 +17,17 @@ const styles = StyleSheet.create({
     flex:1,
     padding: 50
   }, 
+  button: {
+    borderColor: 'blue',
+    borderWidth: 2
+  },
   buttons: {
     margin: 20,
     borderColor: 'gray'
   },
   input: {
     margin: 10,
+    padding: 10,
     height: 50,
     borderColor: 'gray',
     borderWidth: 2

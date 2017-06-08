@@ -12,7 +12,8 @@ import {logout} from '../actions'
 const styles = {
   container: {
     display: 'flex',
-    flex: 2
+    flex: 1,
+    margin: 50
   }
 }
 
