@@ -44,7 +44,7 @@ class ToDoModal extends React.Component {
 
   componentDidMount(){
     this.props.navigation.setParams({
-      onDone: () => {this.props.dispatch(addTodo(this.props.aws.db, this.state.text))}
+      onDone: () => {this.props.dispatch(addTodo(this.state.text))}
     })
   }
 

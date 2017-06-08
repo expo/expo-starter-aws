@@ -29,7 +29,7 @@ class ToDoList extends React.Component {
       <CheckBox
       checked={item.completed}
       title={item.text}
-      onPress = {() => {this.props.dispatch(toggleTodo(this.props.aws.db,item.todoId))}}
+      onPress = {() => {this.props.dispatch(toggleTodo(item))}}
       />
     )
     return checkbox
