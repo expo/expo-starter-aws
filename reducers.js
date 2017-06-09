@@ -5,7 +5,7 @@ import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 todo = (state = {}, action) => {
   switch(action.type) {
     case 'TOGGLE_TODO':
-      return (action.id == state.id) ? {...state, completed: !state.completed} : state
+      return (action.todoId == state.todoId) ? {...state, completed: !state.completed} : state
     default:
       return state
   }

@@ -34,7 +34,7 @@ class ToDoModal extends React.Component {
     return {
       headerLeft: null,
       headerRight: 
-      (<Button title="DONE" onPress={_onPress}/>)
+      (<Button title="Done" onPress={_onPress}/>)
     }
   }
 

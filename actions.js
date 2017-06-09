@@ -132,7 +132,14 @@ export const toggleTodo = (todo) => async (dispatch) => {
       },
       ReturnValues: "UPDATED_NEW"
     }).promise()
+
     dispatch(syncTodos())
+    // Update the toggle condition locally for performance, but no syncing (yet)
+    //
+    // dispatch({
+    //   type: 'TOGGLE_TODO',
+    //   todoId: todo.todoId
+    // })
   } catch (err) {
     alert(err)
     console.log(err)
