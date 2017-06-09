@@ -20,6 +20,7 @@ import ToDoModal from './Components/TodoModal'
 import ToDoList from './Components/TodoList'
 import LoginScreen from './Components/LoginScreen'
 import RegisterScreen from './Components/RegisterScreen.js'
+import ConfirmRegistrationScreen from './Components/ConfirmRegistrationScreen.js'
 import SettingsScreen from './Components/SettingsScreen'
 
 // AWS Integrations
@@ -99,6 +100,9 @@ const AuthScreen = StackNavigator({
   },
   Register: {
     screen: RegisterScreen
+  },
+  ConfirmRegistration: {
+    screen: ConfirmRegistrationScreen
   }
 })
 

@@ -52,13 +52,26 @@ aws = (state = {}, action) => {
       // After logging in, set up our local databases
       // Save the current authentication token
       return {
+        ...state,
         loginState: action.type,
         db: action.db
       }
     case 'LOGIN_ERROR': 
     case 'LOGIN_REQUEST':
     case 'LOGIN_NONE':
-      return {loginState: action.type}
+      return {...state, loginState: action.type, db: null}
+
+    case 'SIGNUP_SUCCESS': 
+    case 'SIGNUP_ERROR': 
+    case 'SIGNUP_REQUEST':
+    case 'SIGNUP_NONE':
+      return {...state, signUpState: action.type}
+
+    case 'CONFIRM_REGISTRATION_SUCCESS': 
+    case 'CONFIRM_REGISTRATION_ERROR': 
+    case 'CONFIRM_REGISTRATION_REQUEST':
+    case 'CONFIRM_REGISTRATION_NONE':
+      return {...state, confirmRegistrationState: action.type}
     default:  
       return state
   }

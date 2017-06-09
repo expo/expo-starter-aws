@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, TextInput, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
 import { CheckBox, ListItem, List } from 'react-native-elements'
 import { FormLabel, FormInput } from 'react-native-elements'
 import { TabNavigator, StackNavigator } from "react-navigation";
@@ -7,46 +7,94 @@ import { TabNavigator, StackNavigator } from "react-navigation";
 import { Provider, connect } from 'react-redux'
 
 import {todoApp, todos} from '../reducers'
-import {login} from '../actions'
+import {signUp} from '../actions'
+const styles = StyleSheet.create({
+  loading: {
 
-const styles = {
+  },
+  container: {
+    flex:1,
+    padding: 50
+  }, 
+  button: {
+    borderColor: 'blue',
+    borderRadius: 3,
+    borderWidth: 2
+  },
+  buttons: {
+    margin: 20,
+    borderColor: 'gray'
+  },
+  input: {
+    margin: 10,
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 10,
+    height: 50,
+  },
 
-}
+  title: {
+    textAlign: 'center',
+    fontSize: 25,
+    margin: 35
+  }
+})
 
-class LoginScreen extends React.Component {
+class RegisterScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      email: ''
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.signUpState === "SIGNUP_SUCCESS") {
+      nextProps.navigation.navigate("ConfirmRegistration")
+    }
+  }
+
   render() {
+    const loading = <ActivityIndicator/>
     return (
-      <View style={{flex:1, padding:20}}> 
+      <View style={styles.container}> 
+        <Text style={styles.title}> Register Account </Text>
         <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        style={styles.input}
         onChangeText={(text) => this.setState({username: text})}
         autoCorrect = {false}
+        autoCapitalize = 'none'
+        placeholder=" username"
         value={this.state.username}
         />
         <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        style={styles.input}
         onChangeText={(text) => this.setState({password: text})}
         secureTextEntry = {true}
         autoCorrect = {false}
+        autoCapitalize = 'none'
+        placeholder=" password"
         value={this.state.password}
         />
-        <Button
-        title = 'Login'
-        onPress = {() => this.props.dispatch(login(this.state.username,this.state.password))}
+        <TextInput
+        style={styles.input}
+        onChangeText={(text) => this.setState({email: text})}
+        autoCorrect = {false}
+        autoCapitalize = 'none'
+        placeholder=" email"
+        value={this.state.email}
         />
+        <Button
+        title = 'Register'
+        onPress = {() => this.props.dispatch(signUp(this.state.username,this.state.password,this.state.email))}
+        />
+        {this.props.signUpState === 'SIGNUP_REQUEST' ? loading : null}
       </View>
     )
   }
   
-  _login() {
-    this.login(this.state.username, this.state.password)
-  }
 }
-export default connect(state => state)(LoginScreen);
+export default connect(state => state.aws)(RegisterScreen);

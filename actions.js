@@ -186,6 +186,20 @@ export const login = (username, password) => async (dispatch) => {
   }
 }
 
+export const signUp = (username, password, email) => async (dispatch) => {
+  try {
+    const c = new Cognito() 
+    dispatch({ type: "SIGNUP_REQUEST"})
+    const result = await c.signUp(username, password, email)
+    console.log(result) 
+    dispatch({ type: "SIGNUP_SUCCESS", newUser: result.user.username})
+  } catch (error) {
+    console.log(error)
+    alert(error);
+    dispatch({ type: "SIGNUP_ERROR", error})
+  }
+}
+
 export const logout = () => (dispatch) => {
   const user = new Cognito().getCurrentUser()
   user.signOut()
