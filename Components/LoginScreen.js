@@ -83,6 +83,7 @@ class LoginScreen extends React.Component {
       <View style={styles.container}> 
         <Text style={styles.title}>Expo AWS Todo List</Text>
         <TextInput
+        ref='username'
         style={styles.input}
         onChangeText={(text) => this.setState({username: text})}
         autoCapitalize= 'none'
@@ -92,6 +93,7 @@ class LoginScreen extends React.Component {
         placeholder=' Username'
         />
         <TextInput
+        ref='password'
         style={styles.input}
         onChangeText={(text) => this.setState({password: text})}
         secureTextEntry = {true}
@@ -100,6 +102,7 @@ class LoginScreen extends React.Component {
         value={this.state.password}
         returnKeyType='done'
         placeholder=' Password'
+        onSubmitEditing={() => this.props.dispatch(login(this.state.username,this.state.password))}
         />
         {buttons}
         {this.props.loginState === 'LOGIN_REQUEST' ? loading : null}

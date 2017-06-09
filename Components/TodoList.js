@@ -32,6 +32,10 @@ const styles = StyleSheet.create({
 class ToDoList extends React.Component {
   constructor(props) {
     super(props)
+    // Showing toggled todos that
+    this.state = {
+      todos: this.props.todos
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,6 +43,7 @@ class ToDoList extends React.Component {
       nextProps.aws.loginState === "LOGIN_NONE") {
       nextProps.navigation.navigate("Auth")
     }
+    this.state.todos = nextProps.todos
   }
 
   componentWillMount() {
@@ -70,12 +75,27 @@ class ToDoList extends React.Component {
   }
 
   _renderItem({item,index}) {
+    const tempCheckbox = (
+      <View style={styles.container}>
+        <TouchableOpacity
+            style={styles.wrapper}
+            underlayColor="rgba(1, 1, 255, 0.9)"
+            onPress={() => this._toggleTodo(index)}>
+              <MaterialIcons
+              name={item.completed ? "check-box" : "check-box-outline-blank"}
+              color={item.completed ? "lightgreen" : "lightgrey"}
+              size={26}
+              />
+              <Text style={styles.text}> {item.text} </Text>
+        </TouchableOpacity>
+      </View>
+    )
     const checkbox = (
       <View style={styles.container}>
         <TouchableOpacity
             style={styles.wrapper}
             underlayColor="rgba(1, 1, 255, 0.9)"
-            onPress={() => {this.props.dispatch(toggleTodo(item))}}>
+            onPress={() => this._toggleTodo(item, index)}>
               <MaterialIcons
               name={item.completed ? "check-box" : "check-box-outline-blank"}
               color={item.completed ? "green" : "grey"}
@@ -85,18 +105,20 @@ class ToDoList extends React.Component {
         </TouchableOpacity>
       </View>
     )
-    return checkbox
+    return item.temp ? tempCheckbox : checkbox
   }
 
-  _renderHeader() {
-    return (
-      <Text> You can do this! </Text>
-    );
+  _toggleTodo(item, index) {
+    this.props.dispatch(toggleTodo(item))
+    tempTodos = this.state.todos.slice()
+    tempTodos[index].temp = true
+    tempTodos[index].completed = !tempTodos[index].completed
+    this.setState({todos: tempTodos})
   }
   render() {
     return (
         <FlatList
-        data={this.props.todos}
+        data={this.state.todos}
         renderItem={(i) => this._renderItem(i)}
         keyExtractor={item => item.todoId}
         />
