@@ -19,6 +19,7 @@ import {importTodos, login} from './actions'
 import ToDoModal from './Components/TodoModal'
 import ToDoList from './Components/TodoList'
 import LoginScreen from './Components/LoginScreen'
+import RegisterScreen from './Components/RegisterScreen.js'
 import SettingsScreen from './Components/SettingsScreen'
 
 // AWS Integrations
@@ -92,17 +93,37 @@ const MainScreen = TabNavigator({
     }
   }
 });
-
-class App extends React.Component {
-  render() {
-    switch(this.props.loginState) {
-      case 'LOGIN_SUCCESS':
-        return <MainScreen/>
-      default:
-        return <LoginScreen/>
-    }
+const AuthScreen = StackNavigator({
+  Login: {
+    screen: LoginScreen
+  },
+  Register: {
+    screen: RegisterScreen
   }
-}
+})
+
+const App = StackNavigator({
+  Main: {
+    screen: MainScreen
+  },
+  Auth: {
+    screen: AuthScreen
+  }
+}, {
+  mode: 'modal',
+  headerMode: 'none'
+})
+
+// class App extends React.Component {
+//   render() {
+//     switch(this.props.loginState) {
+//       case 'LOGIN_SUCCESS':
+//         return <MainScreen/>
+//       default:
+//         return <LoginScreen/>
+//     }
+//   }
+// }
 App = connect(state => state.aws)(App)
 
 class Root extends React.Component {
@@ -113,7 +134,7 @@ class Root extends React.Component {
     // Code for signing up, logging in, confirming registration
     // c.signup('wilson','password','wilzh40@gmail.com')
     // c.confirmregistration('wilson','931659')
-    this.store.dispatch(login('wilson','password'))
+    // this.store.dispatch(login('wilson','password'))
   }
   render() {
     return (

@@ -34,6 +34,18 @@ class ToDoList extends React.Component {
     super(props)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.aws.loginState === "LOGIN_NONE") {
+      nextProps.navigation.navigate("Auth")
+    }
+  }
+
+  componentWillMount() {
+    if(this.props.aws.loginState !== "LOGIN_SUCCESS") {
+      this.props.navigation.navigate("Auth")
+    }
+  }
+
   static navigationOptions = ({navigation}) => 
   {
     return {

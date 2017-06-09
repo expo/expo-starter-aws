@@ -49,7 +49,6 @@ export const syncTodos = () => async (dispatch) => {
       'ScanIndexForward': false
     }).promise()
 
-    console.log(todos)
     console.log('Synced todos')
     dispatch(displayTodos(todos['Items']))
 

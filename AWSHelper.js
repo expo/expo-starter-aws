@@ -1,11 +1,12 @@
 import { AuthenticationDetails, CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
 import AWS, {Config, CognitoIdentityServiceProvider} from 'aws-sdk/dist/aws-sdk-react-native';
+import {awsmobile} from './aws-exports'
 import * as config from './aws-config'
 
 
-export default class Cognito {
+export default class CognitoHelper {
   constructor() {
-    this.config = config
+    this.config = awsmobile
     console.log(this.config.get)
   }
   getUserPool() {

@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   }, 
   button: {
     borderColor: 'blue',
+    borderRadius: 3,
     borderWidth: 2
   },
   buttons: {
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
     padding: 10,
     height: 50,
   },
+
   title: {
     textAlign: 'center',
     fontSize: 25,
@@ -42,12 +44,19 @@ const styles = StyleSheet.create({
 
 })
 
+
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       username: '',
       password: ''
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
+    if(nextProps.loginState === "LOGIN_SUCCESS") {
+      nextProps.navigation.goBack(null)
     }
   }
   render() {
@@ -57,13 +66,15 @@ class LoginScreen extends React.Component {
         <Button
         style={styles.button}
         title = 'Login'
+        disabled = {this.props.loginState === "LOGIN_REQUEST"}
         onPress = {() => this.props.dispatch(login(this.state.username,this.state.password))}
         />
 
         <Button 
         style={styles.button}
         title = 'Register'
-        onPress = {() => this._register()}
+        disabled = {this.props.loginState === "LOGIN_REQUEST"}
+        onPress = {() => this.props.navigation.navigate("Register")}
         />
        </View>
     )
@@ -90,8 +101,8 @@ class LoginScreen extends React.Component {
         returnKeyType='done'
         placeholder=' Password'
         />
-
-        {this.props.loginState === 'LOGIN_REQUEST' ? loading : buttons}
+        {buttons}
+        {this.props.loginState === 'LOGIN_REQUEST' ? loading : null}
       </View>
     )
   }
@@ -99,4 +110,6 @@ class LoginScreen extends React.Component {
 
   }
 }
+
+
 export default connect(state => state.aws)(LoginScreen);
