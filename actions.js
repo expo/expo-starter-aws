@@ -192,11 +192,25 @@ export const signUp = (username, password, email) => async (dispatch) => {
     dispatch({ type: "SIGNUP_REQUEST"})
     const result = await c.signUp(username, password, email)
     console.log(result) 
-    dispatch({ type: "SIGNUP_SUCCESS", newUser: result.user.username})
+    dispatch({ type: "SIGNUP_SUCCESS", username: result.user.username})
   } catch (error) {
     console.log(error)
     alert(error);
     dispatch({ type: "SIGNUP_ERROR", error})
+  }
+}
+
+export const confirmRegistration = (username, code) => async (dispatch) => {
+  try {
+    const c = new Cognito() 
+    dispatch({ type: "CONFIRM_REGISTRATION_REQUEST"})
+    const result = await c.confirmRegistration(username, code)
+    console.log(result) 
+    dispatch({ type: "CONFIRM_REGISTRATION_SUCCESS"})
+  } catch (error) {
+    console.log(error)
+    alert(error);
+    dispatch({ type: "CONFIRM_REGISTRATION_ERROR", error})
   }
 }
 

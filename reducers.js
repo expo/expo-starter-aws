@@ -62,6 +62,7 @@ aws = (state = {}, action) => {
       return {...state, loginState: action.type, db: null}
 
     case 'SIGNUP_SUCCESS': 
+      return {...state, signUpState: action.type, username: action.username}
     case 'SIGNUP_ERROR': 
     case 'SIGNUP_REQUEST':
     case 'SIGNUP_NONE':

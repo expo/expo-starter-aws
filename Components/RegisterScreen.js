@@ -52,7 +52,7 @@ class RegisterScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.signUpState === "SIGNUP_SUCCESS") {
+    if(this.props.signUpState !== nextProps.signUpState && nextProps.signUpState === "SIGNUP_SUCCESS") {
       nextProps.navigation.navigate("ConfirmRegistration")
     }
   }

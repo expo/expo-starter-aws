@@ -35,7 +35,8 @@ class ToDoList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.aws.loginState === "LOGIN_NONE") {
+    if(nextProps.aws.loginState !== this.props.aws.loginState &&
+      nextProps.aws.loginState === "LOGIN_NONE") {
       nextProps.navigation.navigate("Auth")
     }
   }

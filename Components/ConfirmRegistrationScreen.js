@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, TextInput, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
 import { CheckBox, ListItem, List } from 'react-native-elements'
 import { FormLabel, FormInput } from 'react-native-elements'
 import { TabNavigator, StackNavigator } from "react-navigation";
@@ -7,46 +7,78 @@ import { TabNavigator, StackNavigator } from "react-navigation";
 import { Provider, connect } from 'react-redux'
 
 import {todoApp, todos} from '../reducers'
-import {login} from '../actions'
+import {confirmRegistration} from '../actions'
+const styles = StyleSheet.create({
+  loading: {
 
-const styles = {
+  },
+  container: {
+    flex:1,
+    padding: 50
+  }, 
+  button: {
+    borderColor: 'blue',
+    borderRadius: 3,
+    borderWidth: 2
+  },
+  buttons: {
+    margin: 20,
+    borderColor: 'gray'
+  },
+  input: {
+    margin: 10,
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 10,
+    height: 80,
+    fontSize: 30
+  },
 
-}
+  title: {
+    textAlign: 'center',
+    fontSize: 25,
+    margin: 35
+  }
+})
 
-class LoginScreen extends React.Component {
+class ConfirmRegistrationScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: '',
-      password: ''
+      code: ''
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.signUpState === "CONFIRM_REGISTRATION_SUCCESS") {
+      nextProps.navigation.goBack(null)
+    }
+  }
+
   render() {
+    const loading = <ActivityIndicator/>
     return (
-      <View style={{flex:1, padding:20}}> 
+      <View style={styles.container}> 
+        <Text style={styles.title}> Register Account: </Text>
+        <Text style={styles.title}> {this.props.username} </Text>
         <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={(text) => this.setState({username: text})}
+        style={styles.input}
+        onChangeText={(text) => this.setState({code: text})}
         autoCorrect = {false}
-        value={this.state.username}
-        />
-        <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={(text) => this.setState({password: text})}
-        secureTextEntry = {true}
-        autoCorrect = {false}
-        value={this.state.password}
+        autoCapitalize = 'none'
+        placeholder=" code"
+        value={this.state.code}
         />
         <Button
-        title = 'Login'
-        onPress = {() => this.props.dispatch(login(this.state.username,this.state.password))}
+        title = 'Register'
+        onPress = {() => this.props.dispatch(confirmRegistration
+          (this.props.username, this.state.code))}
         />
+        {this.props.signUpState === 'SIGNUP_REQUEST' ? loading : null}
       </View>
     )
   }
   
-  _login() {
-    this.login(this.state.username, this.state.password)
-  }
 }
-export default connect(state => state)(LoginScreen);
+export default connect(state => state.aws)(ConfirmRegistrationScreen);
