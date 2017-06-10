@@ -54,7 +54,6 @@ class LoginScreen extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     if(nextProps.loginState === "LOGIN_SUCCESS") {
       nextProps.navigation.goBack(null)
     }

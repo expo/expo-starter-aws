@@ -1,12 +1,15 @@
-import Cognito from './AWSHelper'
+import Cognito from './cognito-helper'
 import {dispatch} from 'redux'
 import AWS, {Config, CognitoIdentityServiceProvider} from 'aws-sdk/dist/aws-sdk-react-native';
 
-let nextTodoId = 0
-TableName = 'expo-mobile-hub-todos'
-
+// Dynamo db database instnace
 let db = null
 
+// Dynamo db table name
+const TableName = 'expo-mobile-hub-todos'
+
+// Code to generate a unique hash for each todo
+// TODO: window.crypto may fail sometimes??
 const generateId = () => {
   var len = 16;
   var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -20,7 +23,7 @@ const generateId = () => {
   return result.toLowerCase();
 }
 
-// Refresh todos
+// Actually display the todos
 export const displayTodos = (todos) => {
   return {
     type: 'DISPLAY_TODOS',
@@ -29,7 +32,6 @@ export const displayTodos = (todos) => {
 }
 
 // Sync todos from database
-// TODO: Check if it is best practices to have source of truth to be in remote db
 export const syncTodos = () => async (dispatch) => {
   try {
     console.log('Syncing Todos')
@@ -219,36 +221,4 @@ export const logout = () => (dispatch) => {
   user.signOut()
   dispatch({ type: 'LOGIN_NONE' })
 }
-
-
-
-export const loginRequest = (username, password) => {
-  return {
-    type: 'LOGIN_REQUEST', 
-  }
-}
-
-export const loginSuccess = (data) => {
-  return {
-    type: 'LOGIN_SUCCESS', 
-    data
-  }
-}
-
-export const loginError = (err) => {
-  return {
-    type: 'LOGIN_ERROR', 
-    err
-  }
-}
-
-export const signup_request = (username, password, email) => {
-  return {
-    type: 'SIGNUP_REQUEST',
-    username,
-    password,
-    email
-  }
-}
-
 

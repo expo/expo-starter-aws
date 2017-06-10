@@ -15,7 +15,6 @@ class ToDoModal extends React.Component {
     this.state = {
       text: ""
     }
-    console.log(this.props.dispatch)
   }
   static navigationOptions = ({navigation}) => 
   {

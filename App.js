@@ -23,9 +23,9 @@ import SettingsScreen from './Components/SettingsScreen'
 
 // AWS Integrations
 // TODO: Add AWS Integrations that DO NOT BREAK
-import Cognito from './AWSHelper';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native'
-import {awsmobile} from './aws-exports.js'
+import Cognito from './cognito-helper';
+import {awsmobile} from './aws-exports'
 
 // Setting up AWS configuration
 // TODO: Kind of hacky way of doing this. ALl the configuration information is in aws-exports.js that is downloaded

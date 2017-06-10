@@ -46,7 +46,6 @@ class ConfirmRegistrationScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     if(nextProps.confirmRegistrationState !== this.props.confirmRegistrationState &&
       nextProps.confirmRegistrationState === "CONFIRM_REGISTRATION_SUCCESS") {
       alert("Confirmation Successful!")
