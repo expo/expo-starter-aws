@@ -5,11 +5,8 @@ import { FormLabel, FormInput } from 'react-native-elements'
 
 import { connect } from 'react-redux'
 
-
 import {todoApp, todos} from '../reducers'
 import {addTodo} from '../actions'
-
-
 
 
 class ToDoModal extends React.Component {
@@ -46,7 +43,6 @@ class ToDoModal extends React.Component {
       onChangeText={(text) => this.setState({text})}
       value={this.state.text}
       placeholder=" Insert Todo Text Here"
-      disabled={this.state.text.length == 0}
       />
     )
   }

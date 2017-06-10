@@ -64,7 +64,7 @@ Next, assuming your terminal is still open inside of the `myApp` folder, run:
 aws s3 cp s3://BUCKET_NAME/aws-config.js src/assets
 ```
 
-Replacing `BUCKET_NAME` with the full name of the S3 bucket found above. This will copy the auto-generated `aws-config.js` file into the `src/assets` folder in your Expo app, which pre-configures all your AWS settings automatically.
+Replacing `BUCKET_NAME` with the full name of the S3 bucket found above. This will copy the auto-generated `aws-exports.js` file into the base folder of your Expo App. Delete all the code in `aws-exports.js` that is outside the `export` statement (the last couple of lines). Those lines of code are not compatible with React Native because React Native uses a different `aws-sdk`. This exports all of the configuration variables to configure the AWS SDK. 
 
 You may have to find you public and private key credentials, and register using the AWS command line interface to link you account.
 
