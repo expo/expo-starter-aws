@@ -1,6 +1,7 @@
 import Cognito from './cognito-helper'
 import {dispatch} from 'redux'
 import AWS, {Config, CognitoIdentityServiceProvider} from 'aws-sdk/dist/aws-sdk-react-native';
+import uuid from 'react-native-uuid'
 
 // Dynamo db database instnace
 let db = null
@@ -8,20 +9,6 @@ let db = null
 // Dynamo db table name
 const TableName = 'expo-mobile-hub-todos'
 
-// Code to generate a unique hash for each todo
-// TODO: window.crypto may fail sometimes??
-const generateId = () => {
-  var len = 16;
-  var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charLength = chars.length;
-  var result = "";
-  let randoms = window.crypto.getRandomValues(new Uint32Array(len));
-  for(var i = 0; i < len; i++) {
-    result += chars[randoms[i] % charLength];
-  }
-  console.log(result)
-  return result.toLowerCase();
-}
 
 // Actually display the todos
 export const displayTodos = (todos) => {
@@ -68,7 +55,7 @@ export const addTodo = (text) => async (dispatch) => {
     const todo = {
       userId,
       text,
-      todoId: (generateId()),
+      todoId: (uuid.v1()),
       completed: false,
       creationDate: (new Date().getTime()),
     }
