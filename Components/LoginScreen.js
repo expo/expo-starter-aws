@@ -49,7 +49,7 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: '',
+      username: this.props.username,
       password: ''
     }
   }

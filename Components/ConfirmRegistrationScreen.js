@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 25,
-    margin: 35
+    margin: 20
   }
 })
 
@@ -51,9 +51,17 @@ class ConfirmRegistrationScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.signUpState === "CONFIRM_REGISTRATION_SUCCESS") {
-      nextProps.navigation.goBack(null)
+    console.log(nextProps)
+    if(nextProps.confirmRegistrationState !== this.props.confirmRegistrationState &&
+      nextProps.confirmRegistrationState === "CONFIRM_REGISTRATION_SUCCESS") {
+      alert("Confirmation Successful!")
+
+      // Go back two screens to the login page
+      const {goBack} = this.props.navigation
+      goBack(null)
+      goBack(null)
     }
+
   }
 
   render() {
@@ -75,7 +83,7 @@ class ConfirmRegistrationScreen extends React.Component {
         onPress = {() => this.props.dispatch(confirmRegistration
           (this.props.username, this.state.code))}
         />
-        {this.props.signUpState === 'SIGNUP_REQUEST' ? loading : null}
+        {this.props.signUpState === 'CONFIRM_REGISTRATION_REQUEST' ? loading : null}
       </View>
     )
   }

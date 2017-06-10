@@ -2,12 +2,8 @@ import React from 'react';
 import { Picker, Switch, Slider, PickerIOS, TextInput, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
 import { ListItem, List } from 'react-native-elements'
 import { FormLabel, FormInput } from 'react-native-elements'
-import Form from 'react-native-form'
 
-import { TabNavigator, StackNavigator } from "react-navigation";
-
-import { Provider, connect } from 'react-redux'
-import { createStore } from 'redux'
+import { connect } from 'react-redux'
 
 
 import {todoApp, todos} from '../reducers'
@@ -20,9 +16,8 @@ class ToDoModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      text: "help"
+      text: ""
     }
-    console.log("l")
     console.log(this.props.dispatch)
   }
   static navigationOptions = ({navigation}) => 
@@ -32,14 +27,10 @@ class ToDoModal extends React.Component {
       navigation.goBack()
     }
     return {
-      headerLeft: null,
+      headerLeft: (<Button title="Cancel" onPress={()=>navigation.goBack()}/>) ,
       headerRight: 
       (<Button title="Done" onPress={_onPress}/>)
     }
-  }
-
-  _onDone = () => {
-    console.log('lol')
   }
 
   componentDidMount(){
@@ -50,14 +41,13 @@ class ToDoModal extends React.Component {
 
   render() {
     return (
-      <Form ref="form">
       <TextInput
-      style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+      style={{top: 10, padding: 5,  backgroundColor: 'white', margin: 10, height: 40, fontSize: 14}}
       onChangeText={(text) => this.setState({text})}
       value={this.state.text}
+      placeholder=" Insert Todo Text Here"
+      disabled={this.state.text.length == 0}
       />
-      </Form>
-
     )
   }
 }

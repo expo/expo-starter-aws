@@ -4,7 +4,6 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import { Provider, connect } from 'react-redux'
 
-import {todoApp, todos} from '../reducers'
 import {toggleTodo} from '../actions'
 
 const styles = StyleSheet.create({
@@ -58,6 +57,7 @@ class ToDoList extends React.Component {
       headerRight: (
       <TouchableOpacity
       onPress={() => navigation.navigate("AddToDo")}
+      hitSlop={{ top: 5, left: 5, bottom: 5, right: 5 }}
       style={{
         flex: 1,
           alignItems: 'center',
@@ -67,7 +67,8 @@ class ToDoList extends React.Component {
       }}>
         <Ionicons
         name='ios-add'
-        size={26}
+        size={40}
+        style={{color: 'blue'}}
         />
         </TouchableOpacity>
       )
@@ -80,7 +81,7 @@ class ToDoList extends React.Component {
         <TouchableOpacity
             style={styles.wrapper}
             underlayColor="rgba(1, 1, 255, 0.9)"
-            onPress={() => this._toggleTodo(index)}>
+            onPress={() => this._toggleTodo(item, index)}>
               <MaterialIcons
               name={item.completed ? "check-box" : "check-box-outline-blank"}
               color={item.completed ? "lightgreen" : "lightgrey"}

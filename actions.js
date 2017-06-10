@@ -192,7 +192,7 @@ export const signUp = (username, password, email) => async (dispatch) => {
     dispatch({ type: "SIGNUP_REQUEST"})
     const result = await c.signUp(username, password, email)
     console.log(result) 
-    dispatch({ type: "SIGNUP_SUCCESS", username: result.user.username})
+    dispatch({ type: "SIGNUP_SUCCESS", username: result.user.username, password})
   } catch (error) {
     console.log(error)
     alert(error);
