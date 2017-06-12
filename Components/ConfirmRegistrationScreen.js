@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex:1,
-    padding: 50
+    padding: 50,
+    backgroundColor: 'white'
   }, 
   button: {
     borderColor: 'blue',
@@ -58,6 +59,10 @@ class ConfirmRegistrationScreen extends React.Component {
 
   }
 
+  _validateFields() {
+    return this.state.code.length  == 6
+
+  }
   render() {
     const loading = <ActivityIndicator/>
     return (
@@ -74,6 +79,7 @@ class ConfirmRegistrationScreen extends React.Component {
         />
         <Button
         title = 'Register'
+        disabled = {!this._validateFields}
         onPress = {() => this.props.dispatch(confirmRegistration
           (this.props.username, this.state.code))}
         />

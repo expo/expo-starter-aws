@@ -39,7 +39,7 @@ AWS.config['region'] = awsmobile.aws_project_region
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffa',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -117,7 +117,7 @@ class Root extends React.Component {
     // Code for signing up, logging in, confirming registration
     // c.signup('wilson','password','wilzh40@gmail.com')
     // c.confirmregistration('wilson','931659')
-    // this.store.dispatch(login('wilson','password'))
+    this.store.dispatch(login('wilson','password'))
   }
   render() {
     return (

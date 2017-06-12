@@ -14,7 +14,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex:1,
-    padding: 50
+    padding: 50,
+    backgroundColor: 'white'
+
   }, 
   button: {
     borderColor: 'blue',
@@ -57,6 +59,9 @@ class RegisterScreen extends React.Component {
     }
   }
 
+  _validateFields() {
+    return this.state.username.length > 0 && this.state.password.length >= 8  && this.state.email.length > 3
+  }
   render() {
     const loading = <ActivityIndicator/>
     return (
@@ -89,6 +94,7 @@ class RegisterScreen extends React.Component {
         />
         <Button
         title = 'Register'
+        disbaled = {!this._validateFields()}
         onPress = {() => this.props.dispatch(signUp(this.state.username,this.state.password,this.state.email))}
         />
         {this.props.signUpState === 'SIGNUP_REQUEST' ? loading : null}
