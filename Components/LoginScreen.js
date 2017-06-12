@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, TextInput, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
+import { Keyboard, InteractionManager, ActivityIndicator, TextInput, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
 import { CheckBox, ListItem, List } from 'react-native-elements'
 import { FormLabel, FormInput } from 'react-native-elements'
 import { TabNavigator, StackNavigator } from "react-navigation";
@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex:1,
-    padding: 50
+    padding: 50,
+    backgroundColor: 'white'
   }, 
   button: {
     borderColor: 'blue',
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 2,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: 'lightgray',
     padding: 10,
     height: 50,
   },
@@ -46,6 +47,9 @@ const styles = StyleSheet.create({
 
 
 class LoginScreen extends React.Component {
+  static navigationOptions = {
+    header: null
+  }
   constructor(props) {
     super(props)
     this.state = {
@@ -58,6 +62,9 @@ class LoginScreen extends React.Component {
       nextProps.navigation.goBack(null)
     }
   }
+  _validateLogin() {
+      return this.props.loginState !== "LOGIN_REQUEST"  && this.state.password.length >= 8 && this.state.username.length > 0
+  }
   render() {
     const loading = <ActivityIndicator/>
     const buttons = (
@@ -65,8 +72,8 @@ class LoginScreen extends React.Component {
         <Button
         style={styles.button}
         title = 'Login'
-        disabled = {this.props.loginState === "LOGIN_REQUEST"}
-        onPress = {() => this.props.dispatch(login(this.state.username,this.state.password))}
+        disabled = {!this._validateLogin()}
+        onPress = {() => this._login()}
         />
 
         <Button 
@@ -101,15 +108,18 @@ class LoginScreen extends React.Component {
         value={this.state.password}
         returnKeyType='done'
         placeholder=' Password'
-        onSubmitEditing={() => this.props.dispatch(login(this.state.username,this.state.password))}
+        onSubmitEditing={() => this._login()}
         />
         {buttons}
         {this.props.loginState === 'LOGIN_REQUEST' ? loading : null}
       </View>
+
     )
   }
-  _register() {
 
+  _login() {
+    Keyboard.dismiss()
+    this.props.dispatch(login(this.state.username, this.state.password))
   }
 }
 

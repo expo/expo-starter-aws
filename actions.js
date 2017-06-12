@@ -1,3 +1,4 @@
+import {InteractionManager} from 'react-native'
 import Cognito from './cognito-helper'
 import {dispatch} from 'redux'
 import AWS, {Config, CognitoIdentityServiceProvider} from 'aws-sdk/dist/aws-sdk-react-native';
@@ -136,43 +137,51 @@ export const toggleTodo = (todo) => async (dispatch) => {
 
 
 export const login = (username, password) => async (dispatch) => {
-  try {
     console.log(`Logging in: ${username} :: ${password}`)
     dispatch({ type: 'LOGIN_REQUEST' });
 
-    c = new Cognito()
-    const token = await c.login(username, password);
+    // TODO: Find out a better way to seperate the actual login request and rendering the activity indicator
+    setTimeout(async () => {
+      try { 
+        c = new Cognito()
 
-    // Setting up AWS credentials for current user
-    const loginKey = 'cognito-idp.' + 
-      AWS.config[ 'aws_cognito_region' ] + 
-      '.amazonaws.com/' + 
-      AWS.config[ 'aws_user_pools_id' ];
-    console.log(`Setting token: ${loginKey} : ${token}`)
+        // Prevent the login auth code from blocking animations
+        // https://facebook.github.io/react-native/docs/interactionmanager.html
+        const token = await c.login(username,password)
 
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-      'IdentityPoolId': AWS.config['aws_cognito_identity_pool_id'],
-      'Logins': {
-        [loginKey]: token
+        // const token = await c.login(username, password);
+
+        // Setting up AWS credentials for current user
+        const loginKey = 'cognito-idp.' + 
+          AWS.config[ 'aws_cognito_region' ] + 
+          '.amazonaws.com/' + 
+          AWS.config[ 'aws_user_pools_id' ];
+        console.log(`Setting token: ${loginKey} : ${token}`)
+
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          'IdentityPoolId': AWS.config['aws_cognito_identity_pool_id'],
+          'Logins': {
+            [loginKey]: token
+          }
+        })
+
+        // Retrieving identity crednetials given a login token
+        await AWS.config.credentials.refreshPromise()
+
+        // Now we can access the db api based on these identity credentials that are automatically pulled from AWS.config
+        // There is a bug in which crc32 checks fail on iPhones when the response is above a certain size
+        // https://github.com/aws/aws-sdk-js/issues?q=is%3Aissue+CRC32CheckFailed+is%3Aclosed
+        db = new AWS.DynamoDB.DocumentClient({dynamoDbCrc32: false })
+
+        // Save the new database and sync todos for current user
+        dispatch({ type: 'LOGIN_SUCCESS', db})
+        dispatch(syncTodos())
+      } catch(error) {
+        console.log(error)
+        alert(error);
+        dispatch({ type: 'LOGIN_ERROR', error})
       }
-    })
-
-    // Retrieving identity crednetials given a login token
-    await AWS.config.credentials.refreshPromise()
-
-    // Now we can access the db api based on these identity credentials that are automatically pulled from AWS.config
-    // There is a bug in which crc32 checks fail on iPhones when the response is above a certain size
-    // https://github.com/aws/aws-sdk-js/issues?q=is%3Aissue+CRC32CheckFailed+is%3Aclosed
-    db = new AWS.DynamoDB.DocumentClient({dynamoDbCrc32: false })
-
-    // Save the new database and sync todos for current user
-    dispatch({ type: 'LOGIN_SUCCESS', db})
-    dispatch(syncTodos())
-  } catch(error) {
-    console.log(error)
-    alert(error);
-    dispatch({ type: 'LOGIN_ERROR', error})
-  }
+    }, 100);
 }
 
 export const signUp = (username, password, email) => async (dispatch) => {
