@@ -1,49 +1,67 @@
 import React from 'react';
-import { Picker, Switch, Slider, PickerIOS, TextInput, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
-import { ListItem, List } from 'react-native-elements'
-import { FormLabel, FormInput } from 'react-native-elements'
+import {
+  Picker,
+  Switch,
+  Slider,
+  PickerIOS,
+  TextInput,
+  Button,
+  Image,
+  StyleSheet,
+  FlatList,
+  Text,
+  View,
+} from 'react-native';
+import { ListItem, List } from 'react-native-elements';
+import { FormLabel, FormInput } from 'react-native-elements';
 
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
-import {todoApp, todos} from '../reducers'
-import {addTodo} from '../actions'
-
+import { todoApp, todos } from '../reducers';
+import { addTodo } from '../actions';
 
 class ToDoModal extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      text: ""
-    }
+      text: '',
+    };
   }
-  static navigationOptions = ({navigation}) => 
-  {
+  static navigationOptions = ({ navigation }) => {
     const _onPress = () => {
-      navigation.state.params.onDone()
-      navigation.goBack()
-    }
+      navigation.state.params.onDone();
+      navigation.goBack();
+    };
     return {
-      headerLeft: (<Button title="Cancel" onPress={()=>navigation.goBack()}/>) ,
-      headerRight: 
-      (<Button title="Done" onPress={_onPress}/>)
-    }
-  }
+      headerLeft: <Button title="Cancel" onPress={() => navigation.goBack()} />,
+      headerRight: <Button title="Done" onPress={_onPress} />,
+    };
+  };
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.navigation.setParams({
-      onDone: () => {this.props.dispatch(addTodo(this.state.text))}
-    })
+      onDone: () => {
+        this.props.dispatch(addTodo(this.state.text));
+      },
+    });
   }
 
   render() {
     return (
       <TextInput
-      style={{top: 10, padding: 5,  backgroundColor: 'white', margin: 10, height: 40, fontSize: 14}}
-      onChangeText={(text) => this.setState({text})}
-      value={this.state.text}
-      placeholder=" Insert Todo Text Here"
+        style={{
+          top: 10,
+          padding: 5,
+          backgroundColor: 'white',
+          margin: 10,
+          height: 40,
+          fontSize: 14,
+        }}
+        onChangeText={text => this.setState({ text })}
+        value={this.state.text}
+        placeholder=" Insert Todo Text Here"
       />
-    )
+    );
   }
 }
 

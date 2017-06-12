@@ -1,85 +1,84 @@
-import _ from 'lodash'
-import { combineReducers } from 'redux'
+import _ from 'lodash';
+import { combineReducers } from 'redux';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 
 todo = (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'TOGGLE_TODO':
-      return (action.todoId == state.todoId) ? {...state, completed: !state.completed} : state
+      return action.todoId == state.todoId
+        ? { ...state, completed: !state.completed }
+        : state;
     default:
-      return state
+      return state;
   }
-}
+};
 
 todos = (state = [], action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'ADD_TODO':
-      return [
-        todo(undefined, action),
-        ...state
-      ]
+      return [todo(undefined, action), ...state];
 
     case 'DELETE_TODO':
-      return state.splice(action.index, 1)
+      return state.splice(action.index, 1);
     case 'TOGGLE_TODO':
-      return _.map(state, td => todo(td,action))
+      return _.map(state, td => todo(td, action));
     case 'DISPLAY_TODOS':
-      return action.todos
+      return action.todos;
     default:
-      return state
+      return state;
   }
-}
+};
 
 loading = (state = false, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'GET_TODO_DATA':
-      return true
+      return true;
     default:
-      return false
+      return false;
   }
-}
+};
 // AWS = {
 //  db: db object for todos
 //  login_state: LOGIN_SUCCESS/LOGIN_REQUEST/LOGIN_ERROR/LOGIN_NONE
 //  token: token string
-//  
+//
 //
 //
 // }
 aws = (state = {}, action) => {
-  switch(action.type) {
-    case 'LOGIN_SUCCESS': 
+  switch (action.type) {
+    case 'LOGIN_SUCCESS':
       // After logging in, set up our local databases
       // Save the current authentication token
       return {
         ...state,
         loginState: action.type,
-        db: action.db
-      }
-    case 'LOGIN_ERROR': 
+        db: action.db,
+      };
+    case 'LOGIN_ERROR':
     case 'LOGIN_REQUEST':
     case 'LOGIN_NONE':
-      return {...state, loginState: action.type, db: null}
+      return { ...state, loginState: action.type, db: null };
 
-    case 'SIGNUP_SUCCESS': 
-      return {...state, signUpState: action.type, username: action.username}
-    case 'SIGNUP_ERROR': 
+    case 'SIGNUP_SUCCESS':
+      return { ...state, signUpState: action.type, username: action.username };
+    case 'SIGNUP_ERROR':
     case 'SIGNUP_REQUEST':
     case 'SIGNUP_NONE':
-      return {...state, signUpState: action.type}
+      return { ...state, signUpState: action.type };
 
-    case 'CONFIRM_REGISTRATION_SUCCESS': 
-    case 'CONFIRM_REGISTRATION_ERROR': 
+    case 'CONFIRM_REGISTRATION_SUCCESS':
+    case 'CONFIRM_REGISTRATION_ERROR':
     case 'CONFIRM_REGISTRATION_REQUEST':
     case 'CONFIRM_REGISTRATION_NONE':
-      return {...state, confirmRegistrationState: action.type}
-    default:  
-      return state
+      return { ...state, confirmRegistrationState: action.type };
+    default:
+      return state;
   }
-}
+};
 
 export const todoApp = combineReducers({
   todos,
   loading,
-  aws
+  aws,
 });
