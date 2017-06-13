@@ -1,6 +1,14 @@
 // React UI
 import React from 'react';
-import { AsyncStorage, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
+import {
+  AsyncStorage,
+  Button,
+  Image,
+  StyleSheet,
+  FlatList,
+  Text,
+  View,
+} from 'react-native';
 import { ListItem, List } from 'react-native-elements';
 import { FormLabel, FormInput } from 'react-native-elements';
 import { TabNavigator, StackNavigator } from 'react-navigation';
@@ -122,23 +130,24 @@ class Root extends React.Component {
     // this.store.dispatch(importTodos(testData))
     // Code for signing up, logging in, confirming registration
     // Login from user sessions
-    
-    this._attemptLogin()
 
+    this._attemptLogin();
   }
 
   async _attemptLogin() {
+    // Right now, the cognito js sdk uses synchronous localStorage in its library to persist user sessions. I am handling this manually by saving the auth token using AsyncStorage. There should be better ways to do this. Good for the user because he/she will not have to wait 10 seconds for each login.
     try {
       const token = await AsyncStorage.getItem('aws_token');
-      console.log('token')
+      console.log('token');
       const username = await AsyncStorage.getItem('username');
-
-      if (token !== null && username !== null ){
-        this.store.dispatch(login(username, null, token))
+      if (token !== null && username !== null) {
+        this.store.dispatch(login(username, null, token));
       }
     } catch (error) {
-      console.log(error)
-      console.log('Current user session not found')
+      console.log(error);
+      console.log(
+        'Current user session not found, user has to log in normally'
+      );
     }
   }
 
