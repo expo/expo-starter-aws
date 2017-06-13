@@ -54,6 +54,7 @@ aws = (state = {}, action) => {
       // Save the current authentication token
       return {
         ...state,
+        username: action.username,
         loginState: action.type,
         db: action.db,
       };

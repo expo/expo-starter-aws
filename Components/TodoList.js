@@ -4,12 +4,14 @@ import {
   TouchableOpacity,
   Button,
   Image,
+  Platform,
   StyleSheet,
   FlatList,
   Text,
   View,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Icon } from 'react-native-elements'
 
 import { Provider, connect } from 'react-redux';
 
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
   text: {
     flexWrap: 'wrap',
     marginLeft: 10,
-    marginRight: 14,
+    marginRight: 15,
     flex: 1,
     fontSize: 16
   },
@@ -69,10 +71,11 @@ class ToDoList extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    return {
+    let options = 
+    {
       headerRight: (
         <TouchableOpacity
-          onPress={() => navigation.navigate('AddToDo')}
+          onPress={() => navigation.navigate('AddTodo')}
           hitSlop={{ top: 5, left: 5, bottom: 5, right: 5 }}
           style={{
             flex: 1,
@@ -85,6 +88,12 @@ class ToDoList extends React.Component {
         </TouchableOpacity>
       ),
     };
+
+    // Remove header if android phone
+    if (Platform.OS === 'android') {
+      options = {...options, header: null}
+    }
+    return options
   };
 
   _renderItem({ item, index }) {
@@ -133,14 +142,31 @@ class ToDoList extends React.Component {
     this.setState({ todos: tempTodos });
   }
   render() {
-    return (
-      <FlatList
-        onRefresh={() => this.props.dispatch(syncTodos())}
-        refreshing={!!this.props.todos.refreshing}
-        data={this.state.todos}
-        renderItem={i => this._renderItem(i)}
-        keyExtractor={item => item.todoId}
+    const androidButton = (
+      <Icon
+      raised
+      reverse
+      containerStyle={{
+        position: 'absolute',
+          bottom: 20,
+          right: 15,
+      }}
+      color='#2196F3'
+      name='playlist-add'
+      onPress={() => this.props.navigation.navigate('AddTodo')}
       />
+    )
+    return (
+      <View>
+      <FlatList
+      onRefresh={() => this.props.dispatch(syncTodos())}
+      refreshing={!!this.props.todos.refreshing}
+      data={this.state.todos}
+      renderItem={i => this._renderItem(i)}
+      keyExtractor={item => item.todoId}
+      />
+      {Platform.OS === 'android' ? androidButton : null}
+      </View>
     );
   }
 }

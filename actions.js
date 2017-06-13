@@ -49,7 +49,6 @@ export const syncTodos = () => async dispatch => {
     console.log(err);
     alert(err);
     dispatch({ type: 'SYNC_FAIL' });
-    dispatch(syncTodos());
   }
 };
 
@@ -183,7 +182,7 @@ export const login = (username, password) => async dispatch => {
       db = new AWS.DynamoDB.DocumentClient({ dynamoDbCrc32: false });
 
       // Save the new database and sync todos for current user
-      dispatch({ type: 'LOGIN_SUCCESS', db });
+      dispatch({ type: 'LOGIN_SUCCESS', db, username });
       dispatch(syncTodos());
     } catch (error) {
       console.log(error);

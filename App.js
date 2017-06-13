@@ -51,7 +51,7 @@ const ToDoScreen = StackNavigator(
     ListScreen: {
       screen: ToDoList,
     },
-    AddToDo: {
+    AddTodo: {
       screen: ToDoModal,
     },
   },

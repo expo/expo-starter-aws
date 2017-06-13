@@ -17,7 +17,14 @@ const styles = {
   container: {
     display: 'flex',
     flex: 1,
-    margin: 50,
+    backgroundColor: 'white',
+    padding: 50,
+  },
+  text: {
+    margin: 15,
+    fontSize: 18,
+    flex: 2,
+    color: 'grey',
   },
 };
 
@@ -25,6 +32,9 @@ class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={styles.text}> About this app: Created using Expo, Create-React-Native-App </Text>
+        <Text style={styles.text}> Username: {this.props.aws.username} </Text>
+        <Text style={styles.text}> Todo Length: {this.props.todos.length} </Text>
         <Button
           style={styles.button}
           title="Logout"
