@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {AsyncStorage} from 'react-native'
 import { combineReducers } from 'redux';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 

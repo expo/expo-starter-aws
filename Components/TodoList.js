@@ -49,6 +49,8 @@ class TodoListItem extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  // Prevents rerendering things that have not changed
   shouldComponentUpdate(nextProps, nextState) {
     return (this.props.completed !== nextProps.completed)
   }
@@ -61,8 +63,7 @@ class TodoListItem extends React.Component {
           style={styles.wrapper}
           underlayColor="rgba(1, 1, 255, 0.9)"
           onPress={() =>
-            this.props.onPressItem(this.props.item, this.props.index)}>
-
+            this.props.onPressItem(this.props.item)}>
           <MaterialIcons
             name={this.props.completed ? 'check-box' : 'check-box-outline-blank'}
             color={this.props.completed ? 'lightgreen' : 'lightgrey'}
@@ -85,16 +86,18 @@ class ToDoList extends React.Component {
     super(props);
     // Showing toggled todos that
     this.state = {
-      completed: this._todosToSelectedState(props.todos),
+      completed: this._todosToCompletedMap(props.todos),
     };
   }
 
-  _todoToMap = todo => {
-    return [ todo.todoId, todo.completed ];
-  };
+  // Helper functions for creating a map (id -> completed)
+  // All toggling is done locally, and aren't synced with the server unless the user pulls to refresh
 
-  _todosToSelectedState = todos => {
-    return new Map(todos.map(this._todoToMap));
+  _todosToCompletedMap(todos){
+    const todoToKv = (todo) => {
+      return [ todo.todoId, todo.completed ];
+    };
+    return new Map(todos.map(todoToKv));
   };
 
   componentWillReceiveProps(nextProps) {
@@ -104,7 +107,9 @@ class ToDoList extends React.Component {
     ) {
       nextProps.navigation.navigate('Auth');
     }
-    this.state.completed = this._todosToSelectedState(nextProps.todos);
+    if(!nextProps.refreshing){
+      this.state.completed = this._todosToCompletedMap(nextProps.todos);
+    }
   }
 
   componentWillMount() {
@@ -142,7 +147,6 @@ class ToDoList extends React.Component {
     const listItem = (
       <TodoListItem
         item={item}
-        index={index}
         completed={!!this.state.completed.get(item.todoId)}
         onPressItem={this._toggleTodo.bind(this)}
       />
@@ -151,7 +155,7 @@ class ToDoList extends React.Component {
     // return item.temp ? tempCheckbox : checkbox;
   }
 
-  _toggleTodo(item, index) {
+  _toggleTodo(item) {
     const tempItem = { ...item };
     this.setState((state) => {
       const completed = new Map(state.completed);

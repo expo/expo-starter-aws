@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 25,
-    margin: 20,
+    margin: 15,
   },
 });
 
@@ -82,7 +82,7 @@ class ConfirmRegistrationScreen extends React.Component {
           onChangeText={text => this.setState({ code: text })}
           autoCorrect={false}
           autoCapitalize="none"
-          placeholder=" code"
+          placeholder=" 6-digit code"
           value={this.state.code}
         />
         <Button

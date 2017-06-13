@@ -1,6 +1,6 @@
 // React UI
 import React from 'react';
-import { Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
+import { AsyncStorage, Button, Image, StyleSheet, FlatList, Text, View } from 'react-native';
 import { ListItem, List } from 'react-native-elements';
 import { FormLabel, FormInput } from 'react-native-elements';
 import { TabNavigator, StackNavigator } from 'react-navigation';
@@ -120,12 +120,28 @@ class Root extends React.Component {
   componentWillMount() {
     this.store = createStore(todoApp, {}, applyMiddleware(thunk));
     // this.store.dispatch(importTodos(testData))
-    let c = new Cognito();
     // Code for signing up, logging in, confirming registration
-    // c.signup('wilson','password','wilzh40@gmail.com')
-    // c.confirmregistration('wilson','931659')
-    this.store.dispatch(login('wilson', 'password'));
+    // Login from user sessions
+    
+    this._attemptLogin()
+
   }
+
+  async _attemptLogin() {
+    try {
+      const token = await AsyncStorage.getItem('aws_token');
+      console.log('token')
+      const username = await AsyncStorage.getItem('username');
+
+      if (token !== null && username !== null ){
+        this.store.dispatch(login(username, null, token))
+      }
+    } catch (error) {
+      console.log(error)
+      console.log('Current user session not found')
+    }
+  }
+
   render() {
     return (
       <Provider store={this.store}>

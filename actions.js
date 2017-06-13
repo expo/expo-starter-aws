@@ -1,4 +1,4 @@
-import { InteractionManager } from 'react-native';
+import { AsyncStorage, InteractionManager } from 'react-native';
 import Cognito from './cognito-helper';
 import { dispatch } from 'redux';
 import AWS, {
@@ -131,14 +131,14 @@ export const toggleTodo = todo => async dispatch => {
       .promise();
 
     // Option to sync todos after each toggle. You can also sync only after each refresh
-    // dispatch(syncTodos());
+    dispatch(syncTodos());
   } catch (err) {
     alert(err);
     console.log(err);
   }
 };
 
-export const login = (username, password) => async dispatch => {
+export const login = (username, password, token) => async dispatch => {
   console.log(`Logging in: ${username} :: ${password}`);
   dispatch({ type: 'LOGIN_REQUEST' });
 
@@ -150,7 +150,9 @@ export const login = (username, password) => async dispatch => {
 
       // Prevent the login auth code from blocking animations
       // https://facebook.github.io/react-native/docs/interactionmanager.html
-      const token = await c.login(username, password);
+      if(!token) {
+         token = await c.login(username, password);
+      }
 
       // const token = await c.login(username, password);
 
@@ -176,6 +178,11 @@ export const login = (username, password) => async dispatch => {
       // There is a bug in which crc32 checks fail on iPhones when the response is above a certain size
       // https://github.com/aws/aws-sdk-js/issues?q=is%3Aissue+CRC32CheckFailed+is%3Aclosed
       db = new AWS.DynamoDB.DocumentClient({ dynamoDbCrc32: false });
+
+      console.log('Saving user session')
+      // Save the current user session
+      await AsyncStorage.setItem('aws_token', token);
+      await AsyncStorage.setItem('username', username);
 
       // Save the new database and sync todos for current user
       dispatch({ type: 'LOGIN_SUCCESS', db, username });
@@ -220,8 +227,17 @@ export const confirmRegistration = (username, code) => async dispatch => {
   }
 };
 
-export const logout = () => dispatch => {
+export const logout = () => async dispatch => {
   const user = new Cognito().getCurrentUser();
-  user.signOut();
+  if (user != null) {
+    user.signOut();
+  }
+  try {
+    await AsyncStorage.removeItem("aws_token")
+    await AsyncStorage.removeItem("username")
+  } catch (error) {
+    console.log(error);
+    alert(error);
+  }
   dispatch({ type: 'LOGIN_NONE' });
 };
