@@ -21,18 +21,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    margin: 5,
-    marginLeft: 10,
-    marginRight: 10,
     backgroundColor: '#fafafa',
     borderColor: '#ededed',
     borderWidth: 1,
-    padding: 10,
+    padding: 17,
     borderRadius: 3,
   },
-  text: {
+  category: {
     marginLeft: 10,
-    marginRight: 10,
+    top: 4, 
+    color: 'grey',
+    flex: 1,
+    fontSize: 12
+  },
+  text: {
+    flexWrap: 'wrap',
+    marginLeft: 10,
+    marginRight: 14,
+    flex: 1,
+    fontSize: 16
   },
 });
 
@@ -92,7 +99,10 @@ class ToDoList extends React.Component {
             color={item.completed ? 'lightgreen' : 'lightgrey'}
             size={26}
           />
-          <Text style={styles.text}> {item.text} </Text>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.text}> {item.text} </Text>
+      {!!item.category ? <Text style={styles.category}> {item.category} </Text> : null}
+          </View>
         </TouchableOpacity>
       </View>
     );
@@ -111,6 +121,7 @@ class ToDoList extends React.Component {
         </TouchableOpacity>
       </View>
     );
+    return tempCheckbox
     return item.temp ? tempCheckbox : checkbox;
   }
 

@@ -78,6 +78,8 @@ The require modules inside this library directly refer to the default 'aws-sdk'.
 A lot of the logic in saving/loading user sessions is baked in with using a synchronous call to `window.localStorage`. However, there is no way to access this using React Native. The closet alternative is `AsyncStorage`
 #### Slow login times
 The authentication workflow is slow because the library rolls their own 'BigInteger.js' for hashing/bitcrunching calls. A native bridge to a BigInteger library would make this much faster.
+#### Login on Android devices
+Authentication for Android devices seems to be buggy. Authentication works on both the V8 engine and JSC in IOS but not on Android.
 #### CRC32 Validation
 When the response from a DynamoDB request is above a certain size threshold, the CRC32 check for data corruption fails no matter what on iOS. This could be attributed to either bugs in the validation code, the BigInteger library, or just unsupported behavior on an iOS device. This can be fixed by disabling the validation code when initiating the DynamoDB instance.
 [Issue] (https://github.com/aws/aws-sdk-js/issues/405)

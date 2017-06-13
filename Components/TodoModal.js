@@ -20,11 +20,30 @@ import { connect } from 'react-redux';
 import { todoApp, todos } from '../reducers';
 import { addTodo } from '../actions';
 
+const styles = {
+  input: {
+    padding: 5,
+    backgroundColor: 'white',
+    margin: 15,
+    height: 40,
+    fontSize: 14,
+  },
+  text: {
+    fontSize: 17,
+    marginTop: 5,
+    marginLeft: 5,
+    color: 'grey',
+  },
+};
+
+const categories = ['Work', 'Personal', 'Shopping'];
+
 class ToDoModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       text: '',
+      category: categories[0],
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -41,26 +60,32 @@ class ToDoModal extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({
       onDone: () => {
-        this.props.dispatch(addTodo(this.state.text));
+        this.props.dispatch(addTodo(this.state.text, this.state.category));
       },
     });
   }
 
   render() {
+    const pickerItems = categories.map(s =>
+      <Picker.Item key={s} label={s} value={s} />
+    );
     return (
-      <TextInput
-        style={{
-          top: 10,
-          padding: 5,
-          backgroundColor: 'white',
-          margin: 10,
-          height: 40,
-          fontSize: 14,
-        }}
-        onChangeText={text => this.setState({ text })}
-        value={this.state.text}
-        placeholder=" Insert Todo Text Here"
-      />
+      <View>
+        <Text style={styles.text}> Description </Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => this.setState({ text })}
+          value={this.state.text}
+          placeholder=" Insert Todo Text Here"
+        />
+        <Text style={styles.text}> Category </Text>
+        <Picker
+          selectedValue={this.state.category}
+          onValueChange={(itemValue, itemIndex) =>
+            this.setState({ category: itemValue })}>
+          {pickerItems}
+        </Picker>
+      </View>
     );
   }
 }

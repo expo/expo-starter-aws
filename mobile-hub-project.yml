@@ -15,6 +15,7 @@ features:
               text: S
               todoId: S
               userId: S
+              category: S
             hashKeyName: userId
             hashKeyType: S
             indexes: 

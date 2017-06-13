@@ -26,6 +26,7 @@
     "lodash": "^4.17.4",
     "react": "16.0.0-alpha.6",
     "react-native": "^0.44.0",
+    "react-native-button": "^2.0.0",
     "react-native-elements": "^0.12.2",
     "react-native-form": "^2.1.2",
     "react-native-uuid": "^1.4.9",

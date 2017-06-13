@@ -4,14 +4,13 @@ import {
   InteractionManager,
   ActivityIndicator,
   TextInput,
-  Button,
   Image,
   StyleSheet,
   FlatList,
   Text,
   View,
 } from 'react-native';
-import { CheckBox, ListItem, List } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { FormLabel, FormInput } from 'react-native-elements';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 
@@ -28,13 +27,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   button: {
-    borderColor: 'blue',
-    borderRadius: 3,
-    borderWidth: 2,
+    backgroundColor: 'lightblue'
   },
   buttons: {
     margin: 20,
-    borderColor: 'gray',
+    borderColor: 'blue',
   },
   input: {
     margin: 10,
@@ -80,14 +77,17 @@ class LoginScreen extends React.Component {
     const buttons = (
       <View style={styles.buttons}>
         <Button
-          style={styles.button}
+          raised
+          backgroundColor='blue'
+          black='white'
+          containerViewStyle={styles.button}
           title="Login"
           disabled={!this._validateLogin()}
           onPress={() => this._login()}
         />
-
+        <Text> {"\n"} </Text>
         <Button
-          style={styles.button}
+          containerViewStyle={styles.button}
           title="Register"
           disabled={this.props.loginState === 'LOGIN_REQUEST'}
           onPress={() => this.props.navigation.navigate('Register')}

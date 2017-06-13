@@ -53,12 +53,13 @@ export const syncTodos = () => async dispatch => {
   }
 };
 
-export const addTodo = text => async dispatch => {
+export const addTodo = (text, category) => async dispatch => {
   try {
     const userId = AWS.config.credentials.identityId;
     const todo = {
       userId,
       text,
+      category,
       todoId: uuid.v1(),
       completed: false,
       creationDate: new Date().getTime(),
