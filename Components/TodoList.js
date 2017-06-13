@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 import { Provider, connect } from 'react-redux';
 
@@ -31,28 +31,71 @@ const styles = StyleSheet.create({
   },
   category: {
     marginLeft: 10,
-    top: 4, 
+    top: 4,
     color: 'grey',
     flex: 1,
-    fontSize: 12
+    fontSize: 12,
   },
   text: {
     flexWrap: 'wrap',
     marginLeft: 10,
     marginRight: 15,
     flex: 1,
-    fontSize: 16
+    fontSize: 16,
   },
 });
+
+class TodoListItem extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return (this.props.completed !== nextProps.completed)
+  }
+
+  render() {
+    const { category, text } = this.props.item;
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.wrapper}
+          underlayColor="rgba(1, 1, 255, 0.9)"
+          onPress={() =>
+            this.props.onPressItem(this.props.item, this.props.index)}>
+
+          <MaterialIcons
+            name={this.props.completed ? 'check-box' : 'check-box-outline-blank'}
+            color={this.props.completed ? 'lightgreen' : 'lightgrey'}
+            size={26}
+          />
+          <View style={{ flexDirection: 'column' }}>
+            <Text style={styles.text}> {text} </Text>
+            {!!category
+              ? <Text style={styles.category}> {category} </Text>
+              : null}
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
 
 class ToDoList extends React.Component {
   constructor(props) {
     super(props);
     // Showing toggled todos that
     this.state = {
-      todos: this.props.todos,
+      completed: this._todosToSelectedState(props.todos),
     };
   }
+
+  _todoToMap = todo => {
+    return [ todo.todoId, todo.completed ];
+  };
+
+  _todosToSelectedState = todos => {
+    return new Map(todos.map(this._todoToMap));
+  };
 
   componentWillReceiveProps(nextProps) {
     if (
@@ -61,7 +104,7 @@ class ToDoList extends React.Component {
     ) {
       nextProps.navigation.navigate('Auth');
     }
-    this.state.todos = nextProps.todos;
+    this.state.completed = this._todosToSelectedState(nextProps.todos);
   }
 
   componentWillMount() {
@@ -71,8 +114,7 @@ class ToDoList extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    let options = 
-    {
+    let options = {
       headerRight: (
         <TouchableOpacity
           onPress={() => navigation.navigate('AddTodo')}
@@ -91,81 +133,58 @@ class ToDoList extends React.Component {
 
     // Remove header if android phone
     if (Platform.OS === 'android') {
-      options = {...options, header: null}
+      options = { ...options, header: null };
     }
-    return options
+    return options;
   };
 
   _renderItem({ item, index }) {
-    const tempCheckbox = (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.wrapper}
-          underlayColor="rgba(1, 1, 255, 0.9)"
-          onPress={() => this._toggleTodo(item, index)}>
-          <MaterialIcons
-            name={item.completed ? 'check-box' : 'check-box-outline-blank'}
-            color={item.completed ? 'lightgreen' : 'lightgrey'}
-            size={26}
-          />
-          <View style={{flexDirection: 'column'}}>
-            <Text style={styles.text}> {item.text} </Text>
-      {!!item.category ? <Text style={styles.category}> {item.category} </Text> : null}
-          </View>
-        </TouchableOpacity>
-      </View>
+    const listItem = (
+      <TodoListItem
+        item={item}
+        index={index}
+        completed={!!this.state.completed.get(item.todoId)}
+        onPressItem={this._toggleTodo.bind(this)}
+      />
     );
-    const checkbox = (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.wrapper}
-          underlayColor="rgba(1, 1, 255, 0.9)"
-          onPress={() => this._toggleTodo(item, index)}>
-          <MaterialIcons
-            name={item.completed ? 'check-box' : 'check-box-outline-blank'}
-            color={item.completed ? 'green' : 'grey'}
-            size={26}
-          />
-          <Text style={styles.text}> {item.text} </Text>
-        </TouchableOpacity>
-      </View>
-    );
-    return tempCheckbox
-    return item.temp ? tempCheckbox : checkbox;
+    return listItem;
+    // return item.temp ? tempCheckbox : checkbox;
   }
 
   _toggleTodo(item, index) {
-    this.props.dispatch(toggleTodo(item));
-    tempTodos = this.state.todos.slice();
-    tempTodos[index].temp = true;
-    tempTodos[index].completed = !tempTodos[index].completed;
-    this.setState({ todos: tempTodos });
+    const tempItem = { ...item };
+    this.setState((state) => {
+      const completed = new Map(state.completed);
+      completed.set(item.todoId, !completed.get(item.todoId)); 
+      return {completed}
+    })
+    this.props.dispatch(toggleTodo(tempItem));
   }
   render() {
     const androidButton = (
       <Icon
-      raised
-      reverse
-      containerStyle={{
-        position: 'absolute',
+        raised
+        reverse
+        containerStyle={{
+          position: 'absolute',
           bottom: 20,
           right: 15,
-      }}
-      color='#2196F3'
-      name='playlist-add'
-      onPress={() => this.props.navigation.navigate('AddTodo')}
+        }}
+        color="#2196F3"
+        name="playlist-add"
+        onPress={() => this.props.navigation.navigate('AddTodo')}
       />
-    )
+    );
     return (
       <View>
-      <FlatList
-      onRefresh={() => this.props.dispatch(syncTodos())}
-      refreshing={!!this.props.todos.refreshing}
-      data={this.state.todos}
-      renderItem={i => this._renderItem(i)}
-      keyExtractor={item => item.todoId}
-      />
-      {Platform.OS === 'android' ? androidButton : null}
+        <FlatList
+          onRefresh={() => this.props.dispatch(syncTodos())}
+          refreshing={!!this.props.todos.refreshing}
+          data={this.props.todos}
+          renderItem={i => this._renderItem(i)}
+          keyExtractor={item => item.todoId}
+        />
+        {Platform.OS === 'android' ? androidButton : null}
       </View>
     );
   }

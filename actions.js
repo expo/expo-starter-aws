@@ -130,13 +130,8 @@ export const toggleTodo = todo => async dispatch => {
       })
       .promise();
 
-    dispatch(syncTodos());
-    // Update the toggle condition locally for performance, but no syncing (yet)
-    //
-    // dispatch({
-    //   type: 'TOGGLE_TODO',
-    //   todoId: todo.todoId
-    // })
+    // Option to sync todos after each toggle. You can also sync only after each refresh
+    // dispatch(syncTodos());
   } catch (err) {
     alert(err);
     console.log(err);
@@ -148,6 +143,7 @@ export const login = (username, password) => async dispatch => {
   dispatch({ type: 'LOGIN_REQUEST' });
 
   // TODO: Find out a better way to seperate the actual login request and rendering the activity indicator
+  // This is a currently hacky way of decoupling the two
   setTimeout(async () => {
     try {
       c = new Cognito();
@@ -189,7 +185,7 @@ export const login = (username, password) => async dispatch => {
       alert(error);
       dispatch({ type: 'LOGIN_ERROR', error });
     }
-  }, 100);
+  }, 50);
 };
 
 export const signUp = (username, password, email) => async dispatch => {
