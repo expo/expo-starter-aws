@@ -21,12 +21,18 @@ import { todoApp, todos } from '../reducers';
 import { addTodo } from '../actions';
 
 const styles = {
-  input: {
-    padding: 5,
+  container: {
     backgroundColor: 'white',
+    flex:1
+  },
+  input: {
+    padding: 10,
+    backgroundColor: 'white',
+    borderColor: 'lightgrey',
+    borderWidth: 2,
     margin: 15,
-    height: 40,
-    fontSize: 14,
+    height: 100,
+    fontSize: 16,
   },
   text: {
     fontSize: 17,
@@ -52,6 +58,7 @@ class ToDoModal extends React.Component {
       navigation.goBack();
     };
     return {
+      title: 'Add Todo Item',
       headerLeft: <Button title="Cancel" onPress={() => navigation.goBack()} />,
       headerRight: <Button title="Done" onPress={_onPress} />,
     };
@@ -70,12 +77,14 @@ class ToDoModal extends React.Component {
       <Picker.Item key={s} label={s} value={s} />
     );
     return (
-      <View>
+      <View style={styles.container}>
         <Text style={styles.text}> Description </Text>
         <TextInput
           style={styles.input}
           onChangeText={text => this.setState({ text })}
           value={this.state.text}
+          multiline = {true}
+          numberOfLines = {3}
           placeholder=" Insert Todo Text Here"
         />
         <Text style={styles.text}> Category </Text>

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    backgroundColor: '#fafafa',
+    backgroundColor: 'white',
     borderColor: '#ededed',
     borderWidth: 1,
     padding: 17,
@@ -82,6 +82,33 @@ class TodoListItem extends React.Component {
 }
 
 class ToDoList extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    let options = {
+      title: 'My Todo List',
+      headerRight: (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AddTodo')}
+          hitSlop={{ top: 5, left: 5, bottom: 5, right: 5 }}
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 10,
+            paddingTop: 1,
+          }}>
+          <Ionicons name="ios-add" size={40} style={{ color: 'blue' }} />
+        </TouchableOpacity>
+      ),
+    };
+
+    // Remove header if android phone
+    if (Platform.OS === 'android') {
+      options = { ...options, header: null };
+    }
+    return options;
+  };
+
   constructor(props) {
     super(props);
     // Showing toggled todos that
@@ -117,31 +144,6 @@ class ToDoList extends React.Component {
       this.props.navigation.navigate('Auth');
     }
   }
-
-  static navigationOptions = ({ navigation }) => {
-    let options = {
-      headerRight: (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AddTodo')}
-          hitSlop={{ top: 5, left: 5, bottom: 5, right: 5 }}
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginRight: 10,
-            paddingTop: 1,
-          }}>
-          <Ionicons name="ios-add" size={40} style={{ color: 'blue' }} />
-        </TouchableOpacity>
-      ),
-    };
-
-    // Remove header if android phone
-    if (Platform.OS === 'android') {
-      options = { ...options, header: null };
-    }
-    return options;
-  };
 
   _renderItem({ item, index }) {
     const listItem = (
@@ -182,6 +184,7 @@ class ToDoList extends React.Component {
     return (
       <View>
         <FlatList
+          style={{backgroundColor: 'white'}}
           onRefresh={() => this.props.dispatch(syncTodos())}
           refreshing={!!this.props.todos.refreshing}
           data={this.props.todos}

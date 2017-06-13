@@ -64,7 +64,6 @@ const ToDoScreen = StackNavigator(
     },
   },
   {
-    headerMode: 'float',
     mode: 'modal',
   }
 );

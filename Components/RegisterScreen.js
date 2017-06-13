@@ -66,7 +66,7 @@ class RegisterScreen extends React.Component {
   _validateFields() {
     return (
       this.state.username.length > 0 &&
-      this.state.password.length >= 8 &&
+      this.state.password.length >= 6 &&
       this.state.email.length > 3
     );
   }
