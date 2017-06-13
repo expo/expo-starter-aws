@@ -13,7 +13,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import { Provider, connect } from 'react-redux';
 
-import { toggleTodo } from '../actions';
+import { syncTodos, toggleTodo } from '../actions';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -135,6 +135,8 @@ class ToDoList extends React.Component {
   render() {
     return (
       <FlatList
+        onRefresh={() => this.props.dispatch(syncTodos())}
+        refreshing={!!this.props.todos.refreshing}
         data={this.state.todos}
         renderItem={i => this._renderItem(i)}
         keyExtractor={item => item.todoId}

@@ -24,6 +24,8 @@ todos = (state = [], action) => {
       return _.map(state, td => todo(td, action));
     case 'DISPLAY_TODOS':
       return action.todos;
+    case 'SYNC_TODOS': 
+      return {refreshing: true}
     default:
       return state;
   }
