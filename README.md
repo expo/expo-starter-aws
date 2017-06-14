@@ -1,5 +1,5 @@
-This todo app is a demonstration of using Expo in conjunction with AWS Mobilehub, Amazon Cognito, and DynamoDB.
 
+This todo app is a demonstration of using Expo in conjunction with AWS Mobile Hub, Amazon Cognito, and DynamoDB.
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 ## Setting up AWS
@@ -55,7 +55,9 @@ npm install
 ```
 to install all dependencies, such as the AWS SDK. 
 
-`npm start`
+```
+npm start
+```
 
 Runs your app in development mode.
 
