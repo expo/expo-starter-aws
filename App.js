@@ -1,6 +1,7 @@
 // React UI
 import React from 'react';
 import {
+  Platform,
   AsyncStorage,
   Button,
   Image,
@@ -13,6 +14,7 @@ import { ListItem, List } from 'react-native-elements';
 import { FormLabel, FormInput } from 'react-native-elements';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
+import { Constants } from 'expo';
 
 // Redux
 import { Provider, connect } from 'react-redux';
@@ -22,8 +24,8 @@ import { todoApp, todos } from './reducers';
 import { importTodos, login } from './actions';
 
 // Components
-import ToDoModal from './Components/TodoModal';
-import ToDoList from './Components/TodoList';
+import TodoModal from './Components/TodoModal';
+import TodoList from './Components/TodoList';
 import LoginScreen from './Components/LoginScreen';
 import RegisterScreen from './Components/RegisterScreen.js';
 import ConfirmRegistrationScreen from './Components/ConfirmRegistrationScreen.js';
@@ -54,13 +56,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const ToDoScreen = StackNavigator(
+const AddTodoScreen = StackNavigator({
+  TodoModal: {
+    screen: TodoModal,
+  },
+});
+const TodoScreen = StackNavigator(
   {
     ListScreen: {
-      screen: ToDoList,
-    },
-    AddTodo: {
-      screen: ToDoModal,
+      screen: TodoList,
     },
   },
   {
@@ -69,8 +73,8 @@ const ToDoScreen = StackNavigator(
 );
 
 const MainScreen = TabNavigator({
-  ToDos: {
-    screen: ToDoScreen,
+  Todos: {
+    screen: TodoScreen,
     navigationOptions: {
       tabBarLabel: 'Todos',
       tabBarIcon: ({ tintColor, focused }) =>
@@ -114,6 +118,9 @@ const App = StackNavigator(
     Auth: {
       screen: AuthScreen,
     },
+    AddTodo: {
+      screen: AddTodoScreen,
+    },
   },
   {
     mode: 'modal',
@@ -153,7 +160,7 @@ class Root extends React.Component {
   render() {
     return (
       <Provider store={this.store}>
-        <App />
+          <App />
       </Provider>
     );
   }

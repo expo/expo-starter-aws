@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Platform,
   Picker,
   Switch,
   Slider,
@@ -55,13 +56,17 @@ class ToDoModal extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const _onPress = () => {
       navigation.state.params.onDone();
-      navigation.goBack();
+      navigation.goBack(null);
     };
-    return {
-      title: 'Add Todo Item',
-      headerLeft: <Button title="Cancel" onPress={() => navigation.goBack()} />,
+    let options = {
+      headerLeft: <Button title="Cancel" onPress={() => navigation.goBack(null)} />,
       headerRight: <Button title="Done" onPress={_onPress} />,
     };
+    if(Platform.OS !== 'android') {
+      options = {...options, title: 'Add Todo Item'}
+    }
+    return options
+
   };
 
   componentDidMount() {

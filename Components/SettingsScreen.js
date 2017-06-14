@@ -21,10 +21,10 @@ const styles = {
     padding: 50,
   },
   text: {
-    margin: 15,
+    margin: 8,
     fontSize: 18,
-    flex: 2,
-    color: 'grey',
+    flex: 1,
+    color: 'darkgrey',
   },
 };
 
@@ -32,7 +32,7 @@ class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}> About this app: Created using Expo, Create-React-Native-App </Text>
+        <Text style={styles.text}> This is an example app created using Expo, Amazon Mobile Hub, Amazong Cognito, and DynamoDB.</Text>
         <Text style={styles.text}> Username: {this.props.aws.username} </Text>
         <Text style={styles.text}> Todo Length: {this.props.todos.length} </Text>
         <Button
