@@ -66,7 +66,7 @@ Open it in the [Expo app](https://expo.io) on your phone to view it. It will rel
 ### AWS Problems
 #### Cognito-Identity-Js compatibility issues with React Native
 [Issue] (https://github.com/aws/amazon-cognito-identity-js/issues/327)
-The require modules inside this library directly refer to the default 'aws-sdk'. However, if we want to integrate the aws-sdk-js library with react native we have to use the sdk located 'aws-sdk/dist/aws-sdk-react-native'.
+The require modules inside this library directly refer to the default 'aws-sdk'. However, if we want to integrate the aws-sdk-js library with react native we have to use the sdk located 'aws-sdk/dist/aws-sdk-react-native'. I have created a fork of Cognito-Identity-Js to fix thses issues. 
 #### ASyncStorage
 [Issue] (https://github.com/aws/amazon-cognito-identity-js/issues/327)
 A lot of the logic in saving/loading user sessions is baked in with using a synchronous call to `window.localStorage`. However, there is no way to access this using React Native. The closet alternative is `AsyncStorage.` This app persists the user session by saving the `jwtToken` and `username` in `AsyncStorage.`
