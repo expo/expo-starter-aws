@@ -30,7 +30,7 @@ and follow the interactive prompt. Enter your access keys linked to your AWS acc
 
 Visit the [AWS Mobile Hub](https://aws.amazon.com/mobile/) and enter the Mobile Hub Console.
 
-In the Mobile Hub dashboard, click the "Import your project" button. Next, find the `mobile-hub-project.zip` included
+In the Mobile Hub dashboard, click the "Import your project" button.  Next, find the `mobile-hub-project-expo.zip` included
 in this starter project, and drag and drop it to the import modal. Set the name of the project, and then click "Import project." This zip file contains a configuration `.yml` file that contains information such as the database schema. 
 
 Once the project is imported, you'll be directed to the dashboard for this Mobile Hub project. To continue configuring the app, you'll need to find the name of the Amazon S3 bucket auto generated through the App Content Delivery system. To do this, click the "Resources" button on the left side of the Mobile Hub project dashboard, find the "Amazon S3 Buckets" card, and then copy the bucket name that contains `hosting-mobilehub`.
@@ -40,7 +40,7 @@ Once the project is imported, you'll be directed to the dashboard for this Mobil
 Next, assuming your terminal is still open inside of the project folder, run:
 
 ```bash
-aws s3 cp s3://BUCKET_NAME/aws-config.js .
+aws s3 cp s3://BUCKET_NAME/aws-exports.js .
 ```
 
 Where `BUCKET_NAME` is the full name of the S3 bucket found above. This will copy the auto-generated `aws-exports.js` file into the base folder of your Expo App. Delete all the code in `aws-exports.js` that is outside of the `export` statement (the last couple of lines). These lines of code are not compatible with React Native because React Native uses a different `aws-sdk`. This exports all of the configuration variables to configure the AWS SDK, such as the server location and authentication pool id.  
