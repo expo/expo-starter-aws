@@ -78,4 +78,4 @@ The authentication workflow is slow because the library rolls their own 'BigInte
 Authentication for Android devices seems to be buggy. Authentication works on both the V8 engine and JSC in IOS but not on Android.
 
 #### CRC32 Validation
-When the response from a DynamoDB request is above a certain size threshold, the CRC32 check for data corruption fails no matter what on iOS. This could be attributed to either bugs in the validation code, the BigInteger library, or just unsupported behavior on an iOS device. This can be fixed by disabling the validation code when initiating the DynamoDB instance. [Issue](https://github.com/aws/aws-sdk-js/issues/405).
+[Issue](https://github.com/aws/aws-sdk-js/issues/405). When the response from a DynamoDB request is above a certain size threshold, the CRC32 check for data corruption fails no matter what on iOS. This could be attributed to either bugs in the validation code, the BigInteger library, or just unsupported behavior on an iOS device. This can be fixed by disabling the validation code when initiating the DynamoDB instance.
