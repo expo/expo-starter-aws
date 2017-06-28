@@ -1,10 +1,7 @@
-import { AsyncStorage, InteractionManager } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import Cognito from './cognito-helper';
 import { dispatch } from 'redux';
-import AWS, {
-  Config,
-  CognitoIdentityServiceProvider,
-} from 'aws-sdk/dist/aws-sdk-react-native';
+import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import uuid from 'react-native-uuid';
 
 // Dynamo db database instnace

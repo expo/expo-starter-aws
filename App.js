@@ -2,15 +2,10 @@
 import React from 'react';
 import {
   AsyncStorage,
-  Button,
-  Image,
   StyleSheet,
   FlatList,
-  Text,
   View,
 } from 'react-native';
-import { ListItem, List } from 'react-native-elements';
-import { FormLabel, FormInput } from 'react-native-elements';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -18,15 +13,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { Provider, connect } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { todoApp, todos } from './reducers';
+import { todoApp } from './reducers';
 import { importTodos, login } from './actions';
 
 // Components
 import ToDoModal from './Components/TodoModal';
 import ToDoList from './Components/TodoList';
 import LoginScreen from './Components/LoginScreen';
-import RegisterScreen from './Components/RegisterScreen.js';
-import ConfirmRegistrationScreen from './Components/ConfirmRegistrationScreen.js';
+import RegisterScreen from './Components/RegisterScreen';
+import ConfirmRegistrationScreen from './Components/ConfirmRegistrationScreen';
 import SettingsScreen from './Components/SettingsScreen';
 
 // AWS Integrations
@@ -94,6 +89,7 @@ const MainScreen = TabNavigator({
     },
   },
 });
+
 const AuthScreen = StackNavigator({
   Login: {
     screen: LoginScreen,
@@ -127,8 +123,6 @@ class Root extends React.Component {
   componentWillMount() {
     this.store = createStore(todoApp, {}, applyMiddleware(thunk));
     // this.store.dispatch(importTodos(testData))
-    // Code for signing up, logging in, confirming registration
-    // Login from user sessions
 
     this._attemptLogin();
   }

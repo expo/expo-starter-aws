@@ -16,13 +16,12 @@ todo = (state = {}, action) => {
 
 todos = (state = [], action) => {
   switch (action.type) {
-    case 'ADD_TODO':
-      return [todo(undefined, action), ...state];
-
-    case 'DELETE_TODO':
-      return state.splice(action.index, 1);
-    case 'TOGGLE_TODO':
-      return _.map(state, td => todo(td, action));
+    // case 'ADD_TODO':
+    //   return [todo(undefined, action), ...state];
+    // case 'DELETE_TODO':
+    //   return state.splice(action.index, 1);
+    // case 'TOGGLE_TODO':
+    //   return _.map(state, td => todo(td, action));
     case 'DISPLAY_TODOS':
       return action.todos;
     case 'SYNC_TODOS': 
@@ -32,21 +31,10 @@ todos = (state = [], action) => {
   }
 };
 
-loading = (state = false, action) => {
-  switch (action.type) {
-    case 'GET_TODO_DATA':
-      return true;
-    default:
-      return false;
-  }
-};
-// AWS = {
+// aws = {
 //  db: db object for todos
 //  login_state: LOGIN_SUCCESS/LOGIN_REQUEST/LOGIN_ERROR/LOGIN_NONE
 //  token: token string
-//
-//
-//
 // }
 aws = (state = {}, action) => {
   switch (action.type) {
@@ -83,6 +71,5 @@ aws = (state = {}, action) => {
 
 export const todoApp = combineReducers({
   todos,
-  loading,
   aws,
 });
